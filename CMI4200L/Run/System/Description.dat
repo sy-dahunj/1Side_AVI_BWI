@@ -1,0 +1,25 @@
+00	Lower Floor W
+01	Upper Floor W
+02	Elevator Z
+03	Elevator X
+04	Gripper 1 Y
+05	Gripper 2 Y
+06	Gripper Rail W
+07	Laser Sensor X
+08	Left Picker X
+09	Left Picker Q
+10	Left Picker 1 Z
+11	Left Picker 2 Z
+12	Right Picker X
+13	Right Picker Z
+14	Align Table X
+15	Align Table Y
+16	Mold Scan Y
+17	Mold Table Z
+18	Mold Review X
+19	PCB Scan Y
+20	PCB Table Z
+21	PCB Review X
+22	3D Scan Y
+23	3D Table Z
+24	3D Review X

@@ -1,0 +1,14 @@
+[08:45:50 900] [Main Dialog] Program Start..   Version(V3.4.27.a2)
+[08:45:51 906] Door Lock을 Auto로 설정 하였습니다...
+[08:45:51 959] [Main Dialog] Program Exit
+[08:46:15 803] [Main Dialog] Program Start..   Version(V3.4.27.a2)
+[08:47:05 411] [Main Dialog] Manual Mode start
+[08:47:30 184] [Manual - Flow] Start
+[09:00:28 632] [Main Dialog] Program Start..   Version(V3.4.27.a2)
+[09:00:31 942] [Main Dialog] Work Mode start
+[09:00:33 381] [Main Dialog] Manual Mode start
+[09:00:34 205] [Manual - Elevator] Start
+[09:00:51 033] [Main Dialog] Program Exit
+[09:01:43 924] [Main Dialog] Program Start..   Version(V3.4.27.a2)
+[09:01:47 415] [Main Dialog] Manual Mode start
+[09:04:53 149] [Main Dialog] Program Start..   Version(V3.4.27.a2)

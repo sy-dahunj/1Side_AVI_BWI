@@ -1,0 +1,33 @@
+[CEID;Description]
+1001;Control State Changed to Online-Local
+1002;Control State Changed to Online-Remote
+1003;Control State Changed to Offline
+1004;Process State Changed
+1010;Process Started
+1011;Process Ended
+1012;Alarm Set
+1013;Alarm Clear
+1021;TrackIn Of Left
+1022;TrackOut Of Left
+1023;RFID READ Of Left
+1024;RFID WRITE
+1025;Recipe Changed
+1026;ElevatorPusherStart
+1027;Load Elect
+1028;Unload Elect
+1031;Mold START
+1032;Mold Vision Finish
+1033;2D PCB START
+1034;2D PCB Visiont Finish
+1035;3D START
+1036;3D PCB Vision Finish
+1037;MOLD THICK DATA
+1041;MAKE EES DATA
+1042;CLOSE MAP
+1051;Cal MOLD
+1052;Cal PCB
+1053;Cal 3D
+1091;TrackIn Of OHT
+1092;TrackOut Of OHT
+1093;RFID READ Of OHT
+1094;Load Conveyor MZ Count
