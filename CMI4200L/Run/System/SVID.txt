@@ -1,0 +1,41 @@
+[SVID;Description]
+2001;U1;CommState
+2002;U1;Control State
+2003;U1;Prev Control State
+2004;U1;Process State
+2005;U1;Prev Process State
+2011;A;CurrentPPID
+2012;U2;AlarmSet
+2013;U2;AlarmCleare
+2018;U2;SlotID
+2021;A;DeviceName
+2022;A;LotID
+2023;A;Part Number
+2024;A;PCB MAP
+2025;U2;PCB ROW
+2026;U2;PCB COL
+2027;U2;2D Orign
+2028;A;BarCode
+2031;U2;MOLD StripID
+2032;U2;PCB StripID
+2033;U2;3D StripID
+2034;A;EES File
+2041;F4;Load ElectData
+2042;U2;Load ElectID
+2043;F4;Unload ElectData
+2044;U2;Unload ElectID
+2051;F4;MoldLaserThick1
+2052;F4;MoldLaserThick2
+2053;F4;MoldLaserThick3
+2054;F4;MoldLaserThick4
+2055;F4;MoldLaserThick5
+2061;F4;Cal Mold X
+2062;F4;Cal Mold Y
+2063;F4;Cal Mold Z
+2064;F4;Cal PCB X
+2065;F4;Cal PCB Y
+2066;F4;Cal PCB Z
+2067;F4;Cal 3D X
+2068;F4;Cal 3D Y
+2069;F4;Cal 3D Z
+2070;U2;Load Conveyor MZ Count
