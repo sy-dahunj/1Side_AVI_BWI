@@ -68,7 +68,15 @@ END_MESSAGE_MAP()
 
 void CInspector::Initialize_Inspector()
 {
-	BOOL bVisionOpened = m_UdpVision.Open_Socket(UDP_VISION_PORT, UDP_VISION_PORT, UDP_VISION_IP, this);
+
+	BOOL bVisionOpened;
+#if AJIN_BOARD_USE
+	bVisionOpened = m_UdpVision.Open_Socket(UDP_VISION_PORT, UDP_VISION_PORT, UDP_VISION_IP, this);
+#else
+	bVisionOpened = m_UdpVision.Open_Socket(9000, 9001, "127.0.0.1", this);
+#endif
+
+	
 	//TEST=> BOOL bVisionOpened = m_UdpVision.Open_Socket(8000, 8001, UDP_VISION_IP, this);
 	if (bVisionOpened) Set_ConnectRequest(INSPECTOR_VISION);
 }

@@ -1776,5 +1776,12 @@ void CWorkDlg::OnBnClickedBtnSend1()
 		m_sender.Close();
 	}
 	m_sender.Create();
-	m_sender.Connect("192.168.0.100", 20000);
+
+#if AJIN_BOARD_USE
+	m_sender.Connect("192.168.1.12", 21000);
+#else
+	m_sender.Connect("127.0.0.1", 10000);
+#endif
+
+	
 }
