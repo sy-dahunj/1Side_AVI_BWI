@@ -16,6 +16,7 @@
 #include "MESInterface.h"
 #include "Inspector.h"
 #include "CapAttachUDP.h"
+#include "FileSenderClient.h"
 
 // CWorkDlg 대화 상자입니다.
 
@@ -46,6 +47,7 @@ CWorkDlg::CWorkDlg(CWnd* pParent /*=NULL*/)
 {
 	pLogFile = CLogFile::Get_Instance();
 	gData.nLotInfoBlockDelay = 0;
+	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 CWorkDlg::~CWorkDlg()
@@ -220,6 +222,7 @@ BEGIN_MESSAGE_MAP(CWorkDlg, CDialogEx)
 	ON_MESSAGE(UM_UPDATE_LOTID, OnUpdateLotID)
 	ON_MESSAGE(UM_LOT_START_END, &CWorkDlg::OnLotStartEnd)
 
+	ON_BN_CLICKED(IDC_BTN_SEND1, &CWorkDlg::OnBnClickedBtnSend1)
 END_MESSAGE_MAP()
 
 // CWorkDlg 메시지 처리기입니다.
@@ -253,6 +256,46 @@ BOOL CWorkDlg::OnInitDialog()
 	gData.nTrayJobCount = gData.nCMJobCount = 0;
 	m_sCurLotID = "";
 	gData.nLotIdsIndex = 0;
+
+	// IDM_ABOUTBOX는 시스템 명령 범위에 있어야 합니다.
+	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+	ASSERT(IDM_ABOUTBOX < 0xF000);
+
+	CMenu* pSysMenu = GetSystemMenu(FALSE);
+	if (pSysMenu != NULL)
+	{
+		BOOL bNameValid;
+		CString strAboutMenu;
+		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
+		ASSERT(bNameValid);
+		if (!strAboutMenu.IsEmpty())
+		{
+			pSysMenu->AppendMenu(MF_SEPARATOR);
+			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+		}
+	}
+
+	SetIcon(m_hIcon, TRUE);			// 큰 아이콘을 설정합니다.
+	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
+
+	if (!AfxSocketInit()) {
+		AfxMessageBox(("Winsock 초기화 실패"));
+		return FALSE;
+	}
+
+	CString ip = "192.168.0.101";
+	UINT port = 20000;
+
+	if (!m_sender.Create()) { AfxMessageBox("소켓 생성 실패"); return FALSE; }
+
+	if (m_sender.Connect(ip, port) == FALSE) 
+	{
+		if (GetLastError() != WSAEWOULDBLOCK) 
+		{
+			AfxMessageBox("Connect 실패");
+			return FALSE;
+		}
+	}
 #ifdef PICKER_4
 	m_ledIndexSlot[0][4].ShowWindow(FALSE);
 	m_ledIndexSlot[1][4].ShowWindow(FALSE);
@@ -1112,7 +1155,7 @@ void CWorkDlg::Display_Status()
 
 	if (gLot.nNGCnt==0) strText = "";
 	else strText.Format("%d", gLot.nNGCnt);
-	m_stcWorkSlot[16].SetWindowText(strText);
+	m_stcWorkSlot[16].SetWindowText(strText); 
 
 //	if (gLot.nMESNGCnt==0) strText = "";
 //	else strText.Format("%d", gLot.nMESNGCnt);
@@ -1708,4 +1751,30 @@ void CWorkDlg::OnBnClickedBtnBuzzerOff()
 	CLogFile *pLogFile = CLogFile::Get_Instance();
 	pLogFile->Save_Interlock(1);
 #endif
+}
+void CWorkDlg::OnSysCommand(UINT nID, LPARAM lParam)
+{
+	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+	{
+		CWorkDlg dlgAbout;
+		dlgAbout.DoModal();
+	}
+	else
+	{
+		CDialogEx::OnSysCommand(nID, lParam);
+	}
+}
+
+void CWorkDlg::OnBnClickedBtnSend1()
+{
+	BOOL ret = m_sender.BeginSend("D:\\Temp\\temp.ini");
+	m_sender.AsyncSelect(FD_WRITE | FD_CLOSE);
+
+
+	if (ret == TRUE) { // 보조 함수 만들거나 상태값 노출
+		m_sender.ShutDown();     // SD_SEND
+		m_sender.Close();
+	}
+	m_sender.Create();
+	m_sender.Connect("192.168.0.100", 20000);
 }

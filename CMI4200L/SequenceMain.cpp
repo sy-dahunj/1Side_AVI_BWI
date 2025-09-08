@@ -7682,10 +7682,12 @@ void CSequenceMain::Job_LotEnd()
 		if (gData.nPortNo == 1) gData.nPortNo = 2;
 		else					gData.nPortNo = 1;
 	}
+
 	CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
 	pWorkDlg->Clear_LotInfo();
 	pWorkDlg->Enable_LotInfo(TRUE);
 	pWorkDlg->PostMessage(UM_LOT_START_END, (WPARAM)2, NULL);	// LotEnd
+	pWorkDlg->OnBnClickedBtnSend1();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

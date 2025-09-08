@@ -4,6 +4,7 @@
 #pragma once
 
 #include "LogFile.h"
+#include "FileSendSocket.h"
 
 #define UM_UPDATE_MODEL			WM_USER+1
 #define UM_UPDATE_RFID			WM_USER+2
@@ -17,7 +18,6 @@
 #define OP_DELETE				2
 
 // CWorkDlg 대화 상자입니다.
-
 class CWorkDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CWorkDlg)
@@ -153,6 +153,17 @@ public:
 
 	void Enable_LotInfo(BOOL on);
 
+protected:
+	HICON m_hIcon;
+
+	// 생성된 메시지 맵 함수
+	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();
+
+public: 
+	CFileSendSocket m_sender;
+	afx_msg void OnBnClickedBtnSend1();
 };
 
 ///////////////////////////////////////////////////////////////////////////////
