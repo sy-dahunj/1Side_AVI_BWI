@@ -48,7 +48,12 @@ BOOL CCapAttachUDP::Initialize()
 	if (!pEquipData->bUseInlineMode) return FALSE;
 	if (m_bOpened) return TRUE;
 
+#ifdef AJIN_BOARD_USE
 	m_bOpened = m_UdpCapAttach.Open_Socket(UDP_CAPATTACH_LPORT, UDP_CAPATTACH_HPORT, pEquipData->sCapAttachIp, this);
+#else
+	m_bOpened = m_UdpCapAttach.Open_Socket(7000, 7001, "127.0.0.1", this);
+#endif
+	
 	if (!m_bOpened) return FALSE;
 		
 	Set_ConnectRequest();
