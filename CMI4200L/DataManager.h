@@ -12,7 +12,6 @@ typedef struct tag_EQUIP_DATA {
 	BOOL	bUseBar2Alarm;
 	BOOL	bUseBar2NG;
 	BOOL	bUseMES;
-	BOOL	bUseContinueLot;
 	BOOL	bUseDoorLock;
 	BOOL	bUseInlineMode;
 	BOOL	bUseMesApd;			// AVI APD 파일을 남길껀지 아닌지. Lot End와 관련있어 옵션화.

@@ -272,7 +272,7 @@ void CSetupModelDlg::OnBnClickedBtnModelChange()
 			gData.dTrayFirstW = 0; 
 			gData.dTrayFirstL = 0; 
 			gData.dCMSizeW    = pModelData->dCMWSize;
-			gData.nCMUseCount = pModelData->nCMCount;
+			gData.nCMMaxCount = pModelData->nCMCount;
 
 			Display_ModelList();
 			int nIdx = m_lstModelList.FindStringExact(0, pModelData->sModelName);
@@ -660,7 +660,7 @@ void CSetupModelDlg::Set_ModelChange(CString sModel)
 	gData.dTrayFirstW = 0; 
 	gData.dTrayFirstL = 0; 
 	gData.dCMSizeW    = pModelData->dCMWSize;
-	gData.nCMUseCount = pModelData->nCMCount;
+	gData.nCMMaxCount = pModelData->nCMCount;
 
 }
 ///////////////////////////////////////////////////////////////////////////////

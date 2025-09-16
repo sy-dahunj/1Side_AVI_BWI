@@ -1,8 +1,0 @@
-[09:15:11 761] [Main Dialog] Program Start..   Version(V3.4.30.a2)
-[09:17:41 841] [Main Dialog] Program Exit
-[09:18:27 848] [Main Dialog] Program Start..   Version(V3.4.30.a2)
-[09:19:53 622] [Main Dialog] Work Mode start
-[09:21:13 170] [Main Dialog] Program Exit
-[09:32:23 303] [Main Dialog] Program Start..   Version(V3.4.30.a2)
-[09:32:26 662] [Main Dialog] Work Mode start
-[09:35:53 930] [Main Dialog] Program Exit

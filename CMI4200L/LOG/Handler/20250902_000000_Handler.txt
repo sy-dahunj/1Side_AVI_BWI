@@ -1,2 +1,0 @@
-[10:20:58 589] [Main Dialog] Program Start..   Version(V3.4.30.a2)
-[10:21:05 600] [Main Dialog] Work Mode start
