@@ -275,9 +275,9 @@ void COperatorDlg::OnBnClickedBtnOperStart()
 {
 	CCommon *pCommon = CCommon::Get_Instance();
 	CDataManager *pDataManager = CDataManager::Get_Instance();
-	
-	if (gData.bUseAllPass) {
-		pCommon->Show_MsgBox(1, "Not allowed [All Pass] in operator mode.......");
+	EQUIP_DATA *pEquipData = pDataManager->Get_pEquipData();
+	if (pEquipData->bUseContinueLot) {
+		pCommon->Show_MsgBox(1, "Not allowed [continue Lot] in operator mode.......");
 		return;
 	}
 
@@ -486,8 +486,8 @@ void COperatorDlg::OnBnClickedCMCnt()
 		nCM = atoi(strNew);
 		gData.nCMJobCount = nCM;
 
-		nCM1 = nCM / gData.nCMMaxCount;
-		nCM2 = nCM % gData.nCMMaxCount;
+		nCM1 = nCM / gData.nCMUseCount;
+		nCM2 = nCM % gData.nCMUseCount;
 		if(nCM2 > 0) nCM1++;
 		gData.nTrayJobCount = nCM1;
 		strNew.Format("%d", gData.nTrayJobCount);

@@ -28,9 +28,6 @@ private:
 	BOOL	m_bJudgeReq[2][40][45];	// 판정 요청
 	DWORD	m_dwReqStart[2][40][45];	// 요청 시작
 	BOOL	m_bJudgeDone[2][40][45];	// 판정 완료
-	
-	BOOL	m_bBarcodeDone[2][40][45]; // 바코드 전송 누락없이 제대로 됬는가 
-
 
 	void Get_ConnectRequest();
 	void Get_ConnectReply();
@@ -43,8 +40,6 @@ private:
 	void Get_LotEnd(CString sLotID, CString sPortNo);
 	void Get_TimeUpdate(CString sTime);
 	void Get_APDReply(CString sCapForceAvg);
-	
-	void Get_BarcodeReply(CString sPortNo, CString sTrayNo, CString sCmNo);
 
 	void Send_Command(CString strSend);
 
@@ -69,11 +64,6 @@ public:
 	void Set_APDRequest();
 	void Set_TestLoad();
 	void Set_TimeUpdate();
-	void Set_BarcodeDone (int nPortNo, int nTrayNo, int nCmNo, BOOL Done) { m_bBarcodeDone[nPortNo][nTrayNo][nCmNo] = Done;}
-	BOOL Get_BarcodeDone (int nPortNo, int nTrayNo, int nCmNo) { return m_bBarcodeDone[nPortNo][nTrayNo][nCmNo];}
-
-
-
 
 	BOOL Is_Opened() { return m_bOpened; }
 

@@ -88,8 +88,6 @@ CSequenceMain::CSequenceMain()
 	m_nULPickerCase = 100;
 	m_nIndexTCase = 100;
 	m_nNGTrayCase = 100;
-	
-	
 }
 
 CSequenceMain::~CSequenceMain()
@@ -3058,47 +3056,34 @@ BOOL CSequenceMain::Inspect_Run()
 		break;
 
 	case 200:
-		if(gData.bUseAllPass)
-		{
-			for(int i=0; i<gData.nPickCnt; i++) 
-			{
-				if (gData.IndexInfo[1][i] > 0) 
-				{
-					int nJudge = 1;	// 9:Barrel, 13:Fiducial, 14:Shiny edge
-					gData.IndexInfo[1][i] = nJudge;
-				}
-			}
-		}
-		else if (!m_pEquipData->bUseVisionInspect) 
-		{	
-			for(int i=0; i<gData.nPickCnt; i++) {
-				if (gData.IndexInfo[1][i] > 0 && gData.IndexInfo[1][i] != 2)
-				{
-					int nRand = m_pCommon->Get_Random(0, 99);
-					int nJudge = (nRand < gData.nNGPercent ? 2 : 1);
-					if (nJudge == 2) {
-						nRand = m_pCommon->Get_Random(0, 99);
-						nJudge = (nRand < 50 ? 9 : 2);	// 9:Barrel, 13:Fiducial, 14:Shiny edge
-						gData.IndexInfo[1][i] = nJudge;
-					} else {
-						gData.IndexInfo[1][i] = 1;	//Good
+			if (!m_pEquipData->bUseVisionInspect) {	//gjc
+				for(int i=0; i<gData.nPickCnt; i++) {
+					if (gData.IndexInfo[1][i] > 0) {
+						int nRand = m_pCommon->Get_Random(0, 99);
+						int nJudge = (nRand < gData.nNGPercent ? 2 : 1);
+						if (nJudge == 2) {
+							nRand = m_pCommon->Get_Random(0, 99);
+							nJudge = (nRand < 50 ? 9 : 2);	// 9:Barrel, 13:Fiducial, 14:Shiny edge
+							gData.IndexInfo[1][i] = nJudge;
+						} else {
+							gData.IndexInfo[1][i] = 1;	//Good
+						}
 					}
 				}
 			}
-		}
 
-		m_pCommon->Move_Position(AX_INSPECTION_A, 0);
-		if (gData.bUseCMPress) {
-			m_pCommon->Move_Position(AX_INSPECTION_Z, 1);
-			m_sLog.Format("m_nInspectCase,%d",m_nInspectCase); pLogFile->Save_MCCLog(m_sLog);
-			m_nInspectCase = 220;
-		} else {
-			m_pCommon->Move_Position(AX_INSPECTION_Z, 0);
-			gData.IndexJob[1] = 1;
-			m_sLog.Format("m_nInspectCase,%d",m_nInspectCase); pLogFile->Save_MCCLog(m_sLog);
-			m_nInspectCase = 210;
-		}
-		m_pCommon->Set_LoopTime(AUTO_INSPECT, 10000);
+			m_pCommon->Move_Position(AX_INSPECTION_A, 0);
+			if (gData.bUseCMPress) {
+				m_pCommon->Move_Position(AX_INSPECTION_Z, 1);
+				m_sLog.Format("m_nInspectCase,%d",m_nInspectCase); pLogFile->Save_MCCLog(m_sLog);
+				m_nInspectCase = 220;
+			} else {
+				m_pCommon->Move_Position(AX_INSPECTION_Z, 0);
+				gData.IndexJob[1] = 1;
+				m_sLog.Format("m_nInspectCase,%d",m_nInspectCase); pLogFile->Save_MCCLog(m_sLog);
+				m_nInspectCase = 210;
+			}
+			m_pCommon->Set_LoopTime(AUTO_INSPECT, 10000);
 		break;
 
 	case 210:
@@ -4812,7 +4797,7 @@ BOOL CSequenceMain::LDPicker_Run()
 			m_pCommon->Move_Position(AX_LOAD_PICKER_Z, 0);
 			m_sLog.Format("m_nLDPickerCase,%d",m_nLDPickerCase); pLogFile->Save_MCCLog(m_sLog);
 			m_nLDPickerCase = 150;
-			m_pCommon->Set_LoopTime(AUTO_LDPICKER, 10000);			
+			m_pCommon->Set_LoopTime(AUTO_LDPICKER, 10000);
 		}
 		break;
 	case 150:
@@ -4958,8 +4943,7 @@ BOOL CSequenceMain::LDPicker_Run()
 		}
 		break;
 	case 221:
-		if (m_pDX2->iInspCMAlign1In && !m_pDX2->iInspCMAlign1Out) 
-		{
+		if (m_pDX2->iInspCMAlign1In && !m_pDX2->iInspCMAlign1Out) {
 			m_pCommon->Move_Position(AX_LOAD_PICKER_Z, 0);// Ready Up Position 
 			m_sLog.Format("m_nLDPickerCase,%d",m_nLDPickerCase); pLogFile->Save_MCCLog(m_sLog);
 			m_nLDPickerCase = 230;
@@ -4968,13 +4952,9 @@ BOOL CSequenceMain::LDPicker_Run()
 		break;
 
 	case 230:
-		if (m_pCommon->Check_Position(AX_LOAD_PICKER_Z, 0) ) 
-		{
-			CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
-			pWorkDlg->ResetInfoDisplay();
-
+		if (m_pCommon->Check_Position(AX_LOAD_PICKER_Z, 0) ) {
 			if (!m_pCommon->Delay_LoopTime(AUTO_LDPICKER, 100)) break;
-			
+
 			gData.IDXLineNo[0] = gData.PickerLoadLineNo;
 			gData.PickerLoadLineNo = 0;
 			//int cm = (Get_TrayLineConvert(gData.IDXLineNo[0]) -1) * 5;
@@ -5075,8 +5055,6 @@ BOOL CSequenceMain::LDPicker_Run()
 // 9.  (Error : 8100)
 BOOL CSequenceMain::ULPicker_Run()
 {
-	static DWORD dwStart, dwEnd;
-	
 	switch (m_nULPickerCase) {
 	case 100:
 		if (m_nIndexTCase <= 200 && gData.IndexJob[5] == 0) {
@@ -5375,10 +5353,18 @@ BOOL CSequenceMain::ULPicker_Run()
 		}
 		break;
 	case 221:
-		if (m_pCommon->Check_Position(AX_UNLOAD_PICKER_Z, 0) ) 
-		{
+		if (m_pCommon->Check_Position(AX_UNLOAD_PICKER_Z, 0) ) {
+			m_sLog.Format("m_nUnloadPickCase,%d",m_nULPickerCase); pLogFile->Save_MCCLog(m_sLog);
+			m_nULPickerCase = 230;
+			m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
+		}
+		break;
+	case 230:
+		if (m_pCommon->Check_Position(AX_UNLOAD_PICKER_Z, 0) ) {
+
 			int nTNo, nPno, nGdPos;
 			int w = gData.nTrayPos[3]-1;	//Get_TrayLineConvert(gData.nTrayPos[3])-1;
+
 			
 			for(int i=0; i<gData.nPickCnt; i++) {
 				nTNo = (gData.PickerUnTrayNo[i] > 0 ? (gData.PickerUnTrayNo[i] - 1) : 0);
@@ -5389,51 +5375,27 @@ BOOL CSequenceMain::ULPicker_Run()
 					//if (m_pEquipData->bUseInlineMode && nPno != -1) g_objCapAttachUDP.Set_BarcodeUpdate(1, gData.nGoodTrayCount+1, nGdPos, gLot.sBarLoad[nTNo][nPno]);
 					if (nPno != -1) {
 						g_objCapAttachUDP.Set_BarcodeUpdate(gData.nPortNo, gData.nGoodTrayCount+1, nGdPos, gLot.sBarLoad[nTNo][nPno]);
-						
 						//g_objCapAttachUDP.Set_BarcodeUpdate(1, gData.nGoodTrayCount+1, nGdPos, gLot.sBarLoad[nTNo][nPno]);
 					}
-					//					g_objMES.Set_Result(gLot.sLotID, gLot.sBarLoad[nTNo][nPno], "OK", gLot.sNGCode[nTNo][nPno], gLot.sNGText[nTNo][nPno], nTNo+1, nPno+1, gData.nGoodTrayNo, nGdPos, 0,0);
+//					g_objMES.Set_Result(gLot.sLotID, gLot.sBarLoad[nTNo][nPno], "OK", gLot.sNGCode[nTNo][nPno], gLot.sNGText[nTNo][nPno], nTNo+1, nPno+1, gData.nGoodTrayNo, nGdPos, 0,0);
 					pLogFile->Save_CmTrackingLog("GOOD", gData.nGoodTrayCount+1, i+1, w+1, gData.PickerUnTrayNo[i], gData.PickerUnPoNo[i]);
 					m_nUnloadLotCmCnt++;
 				}
 			}
-			m_sLog.Format("m_nUnloadPickCase,%d",m_nULPickerCase); pLogFile->Save_MCCLog(m_sLog);
-			dwStart = GetTickCount();
-			m_nULPickerCase = 222;
-			m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
-		}
-		break;
-	case 222:
-		{
-			// 바코드 전송 제대로 됬는지 확인하고 reply 없을시 retry 
-			dwEnd = GetTickCount();
-			if((dwEnd - dwStart) > 3000) 
-			{
-				m_nULPickerCase = 221;// back to step 222 for retrying
-				m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
-				break;
-			}
-			for(int i=0; i<gData.nPickCnt; i++) 
-			{
-				int w = gData.nTrayPos[3]-1;
-				int nGdPos = (gData.nPickCnt*w) + (gData.nPickCnt-i);
-				if(!g_objCapAttachUDP.Get_BarcodeDone(gData.nPortNo, gData.nGoodTrayCount+1, nGdPos)) break;
-			}
-			m_nULPickerCase = 230;
-			m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
-		}
-		break;
-	case 230:
-		if (m_pCommon->Check_Position(AX_UNLOAD_PICKER_Z, 0) ) 
-		{
+
 			if (Check_LotEnd()==TRUE && (m_nUnload1Case==300 || m_nUnload2Case==300)) {
 				m_sLog.Format("m_nUnloadPickCase,%d",m_nULPickerCase); pLogFile->Save_MCCLog(m_sLog);
 				m_nULPickerCase = 300;
 				m_pCommon->Set_LoopTime(AUTO_ULPICKER, 30000);
 
-			}
-			else
-			{
+			} else if (m_pEquipData->bUseContinueLot && m_nUnloadLotCmCnt == gData.nCmsUseCnt[m_nUnloadLotIndex] && (m_nUnload1Case==300 || m_nUnload2Case==300)) {
+				gData.bContinueLotEnd[m_nUnloadLotIndex] = TRUE;
+				m_sLog.Format("m_nUnloadPickCase,%d",m_nULPickerCase); pLogFile->Save_MCCLog(m_sLog);
+				m_nULPickerCase = 300;
+				m_pCommon->Set_LoopTime(AUTO_ULPICKER, 30000);
+
+			} else {
+
 				gData.nCUnloadLotIndex = m_nUnloadLotIndex;
 				m_pCommon->Move_Position(AX_UNLOAD_PICKER_X1, 0);
 				m_pCommon->Move_Position(AX_UNLOAD_PICKER_X2, 0);
@@ -5807,13 +5769,13 @@ BOOL CSequenceMain::IndexT_Run()
 	case 131:
 		if (gData.IndexJob[0] == 1 || (gData.bCleanOutMode == TRUE) ) {
 
-			/*m_pDY3->oInspVacuumPad1On = FALSE;
+			m_pDY3->oInspVacuumPad1On = FALSE;
 			m_pDY3->oInspVacuumPad2On = FALSE;
 			m_pDY3->oInspVacuumPad3On = FALSE;
 			m_pDY3->oInspVacuumPad4On = FALSE;
 			m_pDY3->oInspVacuumPad5On = FALSE;
 			m_pDY3->oInspVacuumPad6On = FALSE;
-			m_pAJinAXL->Write_Output(3);*/
+			m_pAJinAXL->Write_Output(3);
 			if (!m_pCommon->Delay_LoopTime(AUTO_INDEXT, 200)) break;
 
 			m_pDY2->oInspCMAlign1In = TRUE;
@@ -6710,7 +6672,7 @@ BOOL CSequenceMain::Check_NGTrayEmpty(int nNo)
 			if (nNo == 0 || nNo == 2) { if (gData.NG2TrayInfo[w][l] > 0) return FALSE; }
 
 			nCMCnt++;
-			if(nCMCnt == gData.nCMMaxCount) break;
+			if(nCMCnt == gData.nCMUseCount) break;
 		}
 	}
 	return TRUE;
@@ -6742,7 +6704,7 @@ BOOL CSequenceMain::Check_NGTrayFull(int nNo)
 			if (nNo == 0 || nNo == 2) { if (gData.NG2TrayInfo[w][l] == 0) return FALSE; }
 
 			nCMCnt++;
-			if(nCMCnt == gData.nCMMaxCount) break;
+			if(nCMCnt == gData.nCMUseCount) break;
 		}
 	}
 #endif
@@ -6782,7 +6744,7 @@ BOOL CSequenceMain::Check_GoodTrayEmpty(int nLine)
 			if (gData.GoodTrayInfo[w][l] > 0) return FALSE;
 
 			nCMCnt++;
-			if(nCMCnt == gData.nCMMaxCount) break;
+			if(nCMCnt == gData.nCMUseCount) break;
 		}
 	}
 	return TRUE;
@@ -6821,12 +6783,15 @@ BOOL CSequenceMain::Check_InspecEnd(int nPos)
 
 	int nTrayNo = gData.nInsTrayNo;
 	int cm = (gData.nInsLineNo - 1) * gData.nPickCnt;
-	for(int i=0; i<gData.nPickCnt; i++)
-	{
-		if (gData.IndexInfo[2][i] > 0) 
-		{
-			if(gData.IndexInfo[2][i] != 2) gData.IndexInfo[2][i] = gLot.nInsResult[nTrayNo-1][cm+i];
-			if (gData.IndexInfo[2][i] == 3) gData.IndexInfo[2][i] = 2;
+	for(int i=0; i<gData.nPickCnt; i++) {
+		if (m_pEquipData->bUseContinueLot) {
+			if (gData.IndexInfo[2][i] > 0) gData.IndexInfo[2][i] = 1;
+
+		} else {
+			if (gData.IndexInfo[2][i] > 0) {
+				gData.IndexInfo[2][i] = gLot.nInsResult[nTrayNo-1][cm+i];
+				if (gData.IndexInfo[2][i] == 3) gData.IndexInfo[2][i] = 2;
+			}
 		}
 	}
 	return FALSE;
@@ -6834,17 +6799,7 @@ BOOL CSequenceMain::Check_InspecEnd(int nPos)
 
 BOOL CSequenceMain::Check_IndexNGJobExist()
 {
-	if(gData.bUseAllPass)
-	{
-		for(int l=0; l<gData.nPickCnt; l++) 
-		{
-			gData.IndexInfo[2][l] = 1;
-		}
-		return FALSE;
-	}
-
-	for(int l=0; l<gData.nPickCnt; l++) 
-	{
+	for(int l=0; l<gData.nPickCnt; l++) {
 		if (gData.IndexInfo[2][l] >= 2) return TRUE;
 	}
 
@@ -6863,14 +6818,14 @@ BOOL CSequenceMain::Check_IndexGoodJobExist()
 
 	if (nCntIdx==0 && nCntPick==0) return FALSE;
 	if (nCntIdx==gData.nPickCnt) return FALSE;
-		
-	for(int w=0; w<4; w++) {
-		for(int l=0; l<gData.nPickCnt; l++) {
-			if (gData.IndexInfo[w][l] > 0) nIndexCnt++;
-		}
-	}
 
-	if (nIndexCnt==0) {
+	if (m_pEquipData->bUseContinueLot) {	// 옵션처리
+		// 과검랏 일때는 모두 양품이기 때문에 잔량이 있으면 모두 집은 다음에 바로 안쪽/바깥쪽으로 정렬할 수 있게 해준다.
+
+		// Picker가 모듈을 가지고 있으면 마저 집거나 인덱스에 내려 놓아야한다. 
+		if (nCntPick > 0) return TRUE;
+
+		// Picker에 모듈이 없으면 Index에 모듈 정렬 상태 확인하여 모듈을 집을 수 있게 한다.
 		int x = 0;
 		if (gData.bGDPickerSort1) {
 			// 인덱스 안쪽 1번부터 채워준다.
@@ -6885,11 +6840,34 @@ BOOL CSequenceMain::Check_IndexGoodJobExist()
 				if (x==0 && gData.IndexInfo[4][i] > 0 ) x=1;
 			}
 		}
+		return FALSE;
+	} else {
+		for(int w=0; w<4; w++) {
+			for(int l=0; l<gData.nPickCnt; l++) {
+				if (gData.IndexInfo[w][l] > 0) nIndexCnt++;
+			}
+		}
+
+		if (nIndexCnt==0) {
+			int x = 0;
+			if (gData.bGDPickerSort1) {
+				// 인덱스 안쪽 1번부터 채워준다.
+				for(int i=gData.nPickCnt-1; i>=0; i--) {
+					if (x==1 && gData.IndexInfo[4][i]==0) return TRUE;
+					if (x==0 && gData.IndexInfo[4][i] > 0 ) x=1;
+				}
+			} else {
+				// 인덱스 바깥쪽 5번부터 채워준다.
+				for(int i=0; i<gData.nPickCnt; i++) {
+					if (x==1 && gData.IndexInfo[4][i]==0) return TRUE;
+					if (x==0 && gData.IndexInfo[4][i] > 0 ) x=1;
+				}
+			}
+		}
+
+		if (nIndexCnt >0 && nCntIdx ==0) return FALSE;
+		if (nIndexCnt==0 && nCntPick==0) return FALSE;
 	}
-
-	if (nIndexCnt >0 && nCntIdx ==0) return FALSE;
-	if (nIndexCnt==0 && nCntPick==0) return FALSE;
-
 	return TRUE;
 }
 
@@ -6949,7 +6927,7 @@ BOOL CSequenceMain::Check_LastTray()
 		}
 	}
 
-	if(nCount <= gData.nCMMaxCount) return TRUE;
+	if(nCount <= gData.nCMUseCount) return TRUE;
 	else							return FALSE;
 }
 
@@ -7129,15 +7107,11 @@ void CSequenceMain::Check_GoodPickUpSelect()
 {
 	int nIndexCnt=0;
 	int x = 0;
-		
-	for(int w=0; w<4; w++) {
-		for(int l=0; l<gData.nPickCnt; l++) {
-			if (gData.IndexInfo[w][l] > 0) nIndexCnt++;
-		}
-	}
-	gData.GDIdxNo = 0;
-	if (nIndexCnt==0) {
+
+	if (m_pEquipData->bUseContinueLot) {	// 옵션처리
+		gData.GDIdxNo = 0;
 		x = 0;
+
 		if (gData.bGDPickerSort1) {
 			// 인덱스 안쪽 1번부터 채워준다.
 			for(int i=gData.nPickCnt-1; i>=0; i--) {
@@ -7156,25 +7130,69 @@ void CSequenceMain::Check_GoodPickUpSelect()
 				}
 				if (x==0 && gData.IndexInfo[4][i] > 0 ) x=i+1;
 			}
+		}		
+
+		if (gData.GDIdxNo == 0) {
+			for(int l=0; l<gData.nPickCnt; l++) {
+				if (gData.IndexInfo[4][l] > 0) {
+					gData.GDIdxNo = l + 1;
+					break;
+				}
+			}
+		}
+		for(int l=0; l<gData.nPickCnt; l++) {
+			if (gData.PickerInfor[2][l] == 0) {
+				gData.GDPicNo = l + 1;
+				break;
+			}
+		}
+		
+	} else {
+		for(int w=0; w<4; w++) {
+			for(int l=0; l<gData.nPickCnt; l++) {
+				if (gData.IndexInfo[w][l] > 0) nIndexCnt++;
+			}
+		}
+		gData.GDIdxNo = 0;
+		if (nIndexCnt==0) {
+			x = 0;
+			if (gData.bGDPickerSort1) {
+				// 인덱스 안쪽 1번부터 채워준다.
+				for(int i=gData.nPickCnt-1; i>=0; i--) {
+					if (x>0  && gData.IndexInfo[4][i]==0) {
+						gData.GDIdxNo = x;
+						break;
+					}
+					if (x==0 && gData.IndexInfo[4][i] > 0 ) x=i+1;
+				}
+			} else {
+				// 인덱스 바깥쪽 5번부터 채워준다.
+				for(int i=0; i<gData.nPickCnt; i++) {
+					if (x>0  && gData.IndexInfo[4][i]==0) {
+						gData.GDIdxNo = x;
+						break;
+					}
+					if (x==0 && gData.IndexInfo[4][i] > 0 ) x=i+1;
+				}
+			}
+			
 		}
 
-	}
-
-	if (gData.GDIdxNo == 0) {
+		if (gData.GDIdxNo == 0) {
+			for(int l=0; l<gData.nPickCnt; l++) {
+				if (gData.IndexInfo[4][l] > 0) {
+					gData.GDIdxNo = l + 1;
+					break;
+				}
+			}
+		}
 		for(int l=0; l<gData.nPickCnt; l++) {
-			if (gData.IndexInfo[4][l] > 0) {
-				gData.GDIdxNo = l + 1;
+			if (gData.PickerInfor[2][l] == 0) {
+				gData.GDPicNo = l + 1;
 				break;
 			}
 		}
 	}
-	for(int l=0; l<gData.nPickCnt; l++) {
-		if (gData.PickerInfor[2][l] == 0) {
-			gData.GDPicNo = l + 1;
-			break;
-		}
-	}
-
 }
 
 void CSequenceMain::Check_GoodPickDownSelect()
@@ -7368,42 +7386,88 @@ void CSequenceMain::Set_LoadTray()
 			gData.LoadTrayInfo[w][l] = 0;
 		}
 	}
-	
-	if (gLot.nTrayCount > gData.LoadTrayNo) {
+
+	if (m_pEquipData->bUseContinueLot) {
+		int nTrayCnt, nTrayUse, nCmUse;
+		nTrayCnt = gData.nLoadTrayCount;
+
+		int nLotIndex = 0;
+		for (int i = 0; i < 5; i++) {
+			if (nTrayCnt > gData.nTraysUseCnt[i]) nTrayCnt -= gData.nTraysUseCnt[i];
+			else { nLotIndex = i; break; }
+		}
+		nTrayUse = gData.nTraysUseCnt[nLotIndex];
+		nCmUse   = gData.nCmsUseCnt[nLotIndex];
+
+		gData.sLotID = gData.sLotsID[nLotIndex];	// Lot ID 교체..
+
+		if (nTrayCnt < nTrayUse) {
+			for(int w=0; w<gData.nArrayW; w++) {		//y
+				for(int l=0; l<gData.nArrayL; l++) {	//x
+					gData.LoadTrayInfo[w][l] = 3;
+					nCMCnt++;
+					if(nCMCnt == gData.nCMUseCount) break;
+				}
+			}
+			return;
+		}
+		
+		nCMxxx = nCmUse % gData.nCMUseCount;
 		for(int w=0; w<gData.nArrayW; w++) {		//y
-			for(int l=0; l<gData.nArrayL; l++) {	//x
-				gData.LoadTrayInfo[w][l] = 3;
-				nCMCnt++;
-				if(nCMCnt == gData.nCMMaxCount) break;
+			if (w==0 || w==2 || w==4) {
+				for(int l=0; l<gData.nArrayL; l++) {	//x
+					gData.LoadTrayInfo[w][l] = 3;
+					nCMCnt++;
+					if(nCMCnt == nCMxxx) break;
+				}
+				if(nCMCnt == nCMxxx) break;
+			} else {
+				for(int l=gData.nArrayL-1; l>=0; l--) {	//x
+					gData.LoadTrayInfo[w][l] = 3;
+					nCMCnt++;
+					if(nCMCnt == nCMxxx) break;
+				}
+				if(nCMCnt == nCMxxx) break;
 			}
 		}
+
+	} else {
+
+		if (gLot.nTrayCount > gData.LoadTrayNo) {
+			for(int w=0; w<gData.nArrayW; w++) {		//y
+				for(int l=0; l<gData.nArrayL; l++) {	//x
+					gData.LoadTrayInfo[w][l] = 3;
+					nCMCnt++;
+					if(nCMCnt == gData.nCMUseCount) break;
+				}
+			}
+			CInspector *pInspector = CInspector::Get_Instance();
+			pInspector->Set_LotCount(INSPECTOR_VISION);
+			return;
+		}
+
+		nCMxxx = gLot.nCMCount % gData.nCMUseCount;
+		for(int w=0; w<gData.nArrayW; w++) {		//y
+			if (w==0 || w==2 || w==4) {
+				for(int l=0; l<gData.nArrayL; l++) {	//x
+					gData.LoadTrayInfo[w][l] = 3;
+					nCMCnt++;
+					if(nCMCnt == nCMxxx) break;
+				}
+				if(nCMCnt == nCMxxx) break;
+			} else {
+				for(int l=gData.nArrayL-1; l>=0; l--) {	//x
+					gData.LoadTrayInfo[w][l] = 3;
+					nCMCnt++;
+					if(nCMCnt == nCMxxx) break;
+				}
+				if(nCMCnt == nCMxxx) break;
+			}
+		}
+
 		CInspector *pInspector = CInspector::Get_Instance();
 		pInspector->Set_LotCount(INSPECTOR_VISION);
-		return;
 	}
-
-	nCMxxx = gLot.nCMCount % gData.nCMMaxCount;
-	for(int w=0; w<gData.nArrayW; w++) {		//y
-		if (w==0 || w==2 || w==4) {
-			for(int l=0; l<gData.nArrayL; l++) {	//x
-				gData.LoadTrayInfo[w][l] = 3;
-				nCMCnt++;
-				if(nCMCnt == nCMxxx) break;
-			}
-			if(nCMCnt == nCMxxx) break;
-		} else {
-			for(int l=gData.nArrayL-1; l>=0; l--) {	//x
-				gData.LoadTrayInfo[w][l] = 3;
-				nCMCnt++;
-				if(nCMCnt == nCMxxx) break;
-			}
-			if(nCMCnt == nCMxxx) break;
-		}
-	}
-
-	CInspector *pInspector = CInspector::Get_Instance();
-	pInspector->Set_LotCount(INSPECTOR_VISION);
-
 }
 
 void CSequenceMain::Set_IndexEnd()
@@ -7477,7 +7541,23 @@ void CSequenceMain::Job_LotStart()
 			gData.NG2TrayInfo[i][j] = 0;
 		}
 	}
-	
+	if (m_pEquipData->bUseContinueLot) {
+		gLot.sLotID = gData.sLotsID[0];
+
+		// Total Tray Count
+		gLot.nTrayCount = 0;	// 전체 Tray 수량
+		for (int i = 0; i < 5; i++) {
+			if (gData.nCmsUseCnt[i] == 0) break;		// 중간에 0이 있으면 중단
+			gLot.nTrayCount += gData.nTraysUseCnt[i];
+		}
+
+		// Total CM Count
+		gLot.nCMCount = 0;	// 전체 CM 수량
+		for (int i = 0; i < 5; i++) {
+			if (gData.nCmsUseCnt[i] == 0) break;		// 중간에 0이 있으면 중단
+			gLot.nCMCount += gData.nCmsUseCnt[i];
+		}
+	}
 	CInspector *pInspector = CInspector::Get_Instance();
 	pInspector->Set_LotStart(INSPECTOR_VISION);
 	g_objCapAttachUDP.Set_LotStart(gData.nPortNo);
@@ -7528,7 +7608,7 @@ void CSequenceMain::Job_LotEnd()
 	gLot.lLotEnd = GetTickCount();
 	gLot.sEndTime.Format("%04d%02d%02d_%02d%02d%02d", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond);
 
-	if(gLot.nCMCount < 1) gLot.nCMCount = gLot.nTrayCount * gData.nCMMaxCount;
+	if(gLot.nCMCount < 1) gLot.nCMCount = gLot.nTrayCount * gData.nCMUseCount;
 	lTime = gLot.lLotEnd - gLot.lLotStart;
 	dMESTack = double(lTime/1000);
 	dTack = double(lTime/1000) / double(gLot.nCMCount);
@@ -7574,21 +7654,40 @@ void CSequenceMain::Job_LotEnd()
 	g_objCapAttachUDP.Set_LotEnd(gData.nPortNo);
 	//g_objCapAttachUDP.Set_LotEnd(1);
 
-	if (gLot.sLotID == gData.sLotID) gData.sLotID = "";
-	if (gData.bCleanOutMode==FALSE && !gData.bUseAllPass) 
-	{
-		if (!m_pEquipData->bUseMesApd || !gData.bAPDResultErr) g_objMES.Set_LotEnd(gLot.sLotID, gLot.nCMCount, gData.sOperID, gLot.nGoodCnt, gLot.nNGCnt);
+	if (gLot.sLotID == gData.sLotID) gData.sLotID = "";//
+	if (gData.bCleanOutMode==FALSE && !m_pEquipData->bUseContinueLot) {
+		// 캡 조립이 완료가 되면 완공하기 위해 정보 저장.
+// 		if (m_pEquipData->bUseInlineMode) {
+// 			gLot.sCALotID = gLot.sLotID;
+// 			gLot.nCACmCount = gLot.nCMCount;
+// 			gLot.nCAGoodCount = gLot.nGoodCnt;
+// 			gLot.nCANgCount = gLot.nNGCnt;
+// 			gLot.sCAStartTime = gLot.sStartTime;
+// 			gLot.dwCALotStart = gLot.lLotStart;
+// 
+// 			gData.bCapAttachWork = FALSE;
+// 			//gData.bCapAttachWork = TRUE;	// Inline 모드 일때  Cap Attach까지 LotEnd되어야 투입할수 있도록 해준다.
+// 
+// 
+// 		} else {
+			if (!m_pEquipData->bUseMesApd || !gData.bAPDResultErr) g_objMES.Set_LotEnd(gLot.sLotID, gLot.nCMCount, gData.sOperID, gLot.nGoodCnt, gLot.nNGCnt);
+// 		}
 	}
 
+	if (m_pEquipData->bUseContinueLot) {
+		if (m_pEquipData->bUseInlineMode) gData.bCapAttachWork = TRUE;	// 과검랏 모드 일때 Cap Attach까지 LotEnd되어야 다음 랏 투입할 수 있도록 해준다.
+		gData.nPortNo = 1;
 
-	if (gData.nPortNo == 1) gData.nPortNo = 2;
-	else					gData.nPortNo = 1;
-	
-	g_objCapAttachUDP.Reset();
+	} else {
+		if (gData.nPortNo == 1) gData.nPortNo = 2;
+		else					gData.nPortNo = 1;
+	}
 
 	CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
+	pWorkDlg->Clear_LotInfo();
 	pWorkDlg->Enable_LotInfo(TRUE);
 	pWorkDlg->PostMessage(UM_LOT_START_END, (WPARAM)2, NULL);	// LotEnd
+	pWorkDlg->OnBnClickedBtnSend1();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "LogFile.h"
+#include "FileSendSocket.h"
 
 #define UM_UPDATE_MODEL			WM_USER+1
 #define UM_UPDATE_RFID			WM_USER+2
@@ -17,7 +18,6 @@
 #define OP_DELETE				2
 
 // CWorkDlg 대화 상자입니다.
-
 class CWorkDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CWorkDlg)
@@ -73,14 +73,19 @@ public:
 	CLedStatic		m_ledIndexSlot[5][6];
 	CLedCS			m_ledBarAlarm;
 	CLedCS			m_ledBarNG;
-	CCheckCS		m_chkMESUse;	
+	CCheckCS		m_chkMESUse;
+	CCheckCS		m_chkContinueLot;
 	CGridCS			m_grdShiftList;
 	CButtonCS		m_btnBuzzerOff;
 	CButtonCS		m_btnLotCancel;
 
-	CCheckCS		m_chkAllPass;
-	CStaticCS		m_stcLoadPickNo[4];
-	
+	BOOL			m_bUseContinueLot;
+
+	CStaticCS		m_stcLotsId[5];
+	CStaticCS		m_stcTraysCount[5];
+	CStaticCS		m_stcCmsCount[5];
+
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 	DECLARE_MESSAGE_MAP()
@@ -96,14 +101,16 @@ protected:
 	afx_msg void OnBnClickedChkSampleJob();
 	afx_msg void OnBnClickedBtnConvClear();
 	afx_msg void OnBnClickedChkMESUse();
+	afx_msg void OnBnClickedChkContinueLot();
+
+	afx_msg void OnStcCmsCountClick(UINT nID);
+	afx_msg void OnStcLotsIdClick(UINT nID);
 
 	afx_msg void OnBnClickedLotID();
 	afx_msg void OnBnClickedTrayCnt();
 	afx_msg void OnBnClickedCMCnt();
 	afx_msg void OnBnClickedBtnBuzzerOff();
 	afx_msg void OnBnClickedBtnLotCancel();
-	afx_msg void OnBnClickedChkAllPass();
-	afx_msg void OnStcLoadPickInfoClick(UINT nID);
 
 	afx_msg LRESULT OnUpdateModel(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnUpdateRfid(WPARAM wParam, LPARAM lParam);
@@ -142,12 +149,21 @@ public:
 	void Initial_ShiftGrid();
 	void Add_ShifeError();
 	void AutoStop();
-	
-	void Enable_LotInfo(BOOL on);
-	void UpdateLotInfoFromMES(int nCMCount);
+	void Clear_LotInfo();
 
-	void ResetInfoDisplay();
-	
+	void Enable_LotInfo(BOOL on);
+
+protected:
+	HICON m_hIcon;
+
+	// 생성된 메시지 맵 함수
+	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();
+
+public: 
+	CFileSendSocket m_sender;
+	afx_msg void OnBnClickedBtnSend1();
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -410,7 +410,7 @@ void CLogFile::Save_LotLog(CString strLog)
 			if (nCMCount > gLot.nCMCount) break;
 
 			for(int j=0; j<60; j++){
-				if (j >= gData.nCMMaxCount) break;
+				if (j >= gData.nCMUseCount) break;
 
 				nCMCount++;
 				if (nCMCount > gLot.nCMCount) break;
