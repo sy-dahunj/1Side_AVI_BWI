@@ -147,6 +147,7 @@ public:
 	void UpdateLotInfoFromMES(int nCMCount);
 
 	void ResetInfoDisplay();
+	void ResetLotInfo();
 	
 };
 

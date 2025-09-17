@@ -7591,6 +7591,7 @@ void CSequenceMain::Job_LotEnd()
 	g_objCapAttachUDP.Reset();
 
 	CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
+	pWorkDlg->ResetLotInfo();
 	pWorkDlg->Enable_LotInfo(TRUE);
 	pWorkDlg->PostMessage(UM_LOT_START_END, (WPARAM)2, NULL);	// LotEnd
 }

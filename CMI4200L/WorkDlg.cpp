@@ -1110,10 +1110,10 @@ void CWorkDlg::Display_Status()
 	sData = "";
 	CBarcode_DS1100 *pBarcode_DS1100 = CBarcode_DS1100::Get_Instance();
 	pBarcode_DS1100->GetBarcode(sData);
+			
 	nData = sData.GetLength();
 	if(nData > 0 && gData.nLotInfoBlockDelay == 0) 
 	{
-
 		m_stcLotId1.SetWindowText(sData);
 
 		if (gData.sLotID != sData) {
@@ -1681,4 +1681,13 @@ void CWorkDlg::OnStcLoadPickInfoClick(UINT nID)
 void CWorkDlg::ResetInfoDisplay()
 {
 	for (int i = 0; i < gData.nPickCnt; i++) m_stcLoadPickNo[i].Set_Color(RGB(0x00, 0xFF, 0x00), RGB(0x00, 0x00, 0x00));
+}
+
+void CWorkDlg::ResetLotInfo()
+{
+	CString sTemp;
+	int temp = 0;
+	sTemp.Format("%d", temp);
+	m_stcCMCnt.SetWindowText(sTemp);
+	m_stcLotId2.SetWindowText(sTemp);
 }
