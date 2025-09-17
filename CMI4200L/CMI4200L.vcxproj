@@ -159,8 +159,6 @@
     <ClInclude Include="DataSocket.h" />
     <ClInclude Include="ErrorDlg.h" />
     <ClInclude Include="ExtBarcode_Honeywell.h" />
-    <ClInclude Include="FileSendSocket.h" />
-    <ClInclude Include="Include\NetEndian.h" />
     <ClInclude Include="InitialDlg.h" />
     <ClInclude Include="Inspector.h" />
     <ClInclude Include="KeyPadDlg.h" />
@@ -223,7 +221,6 @@
     <ClCompile Include="DataSocket.cpp" />
     <ClCompile Include="ErrorDlg.cpp" />
     <ClCompile Include="ExtBarcode_Honeywell.cpp" />
-    <ClCompile Include="FileSendSocket.cpp" />
     <ClCompile Include="InitialDlg.cpp" />
     <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="KeyPadDlg.cpp" />

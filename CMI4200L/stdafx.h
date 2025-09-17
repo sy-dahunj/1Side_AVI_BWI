@@ -34,7 +34,7 @@
 #define BTN_FACE	RGB(0xE8, 0xE8, 0xE8)
 
 // Library Add
-#include "LedStatic.h"e
+#include "LedStatic.h"
 #include "CSControls.h"
 #include "CSIniFile.h" 
 #include "CSUdpSocket.h"
@@ -64,24 +64,23 @@
 #define SIM_WAITTIMES	 1		//
 #define SIM_WAITTIMEM	 1		//
 
-//#define AJIN_BOARD_USE
+#define AJIN_BOARD_USE
 
 //BWI Model Only(5x2)
-//#define EQ_TYPE_A1	//R44A,BWI
-#define EQ_TYPE_A2	//R44A,BWI
+#define EQ_TYPE_A1	//R44A,BWI
+//#define EQ_TYPE_A2	//R44A,BWI
 
 #if defined(EQ_TYPE_A1)		//R44A(MainAir1)
-	#define MAIN_VERSION	"V3.5.03.a1"
+	#define MAIN_VERSION	"V3.5.02.a1"
 	#define PICKER_4		// Load/Good/Unload Picker 5개 (최대 6개)
 #elif defined(EQ_TYPE_A2)	//R44A(MainAir2)
-	#define MAIN_VERSION	"V3.5.03.a2"
+	#define MAIN_VERSION	"V3.5.02.a2"
 	#define ALIGN_NEW		// Main Air 2개 (기본 1개), 스테이지 Master/Slave I/O 순서 뒤바뀌어 있음.
 	#define TRAY_CHECK2		// Tray Check Sensor 2개 (기본 1개)
 	#define PICKER_4		// Load/Good/Unload Picker 5개 (최대 6개)
 #endif
 
 #define NG_PICKER_4
-
 
 // #define PICKER_3			// Load/Good/Unload Picker 3
 // #define PICKER_5			// Load/Good/Unload Picker 5개 (기본 6개)
@@ -124,7 +123,7 @@ typedef struct {
 	double		dTrayFirstL;
 	double		dTrayPitchW;	//[W]=[Y]=20
 	double		dTrayPitchL;	//[L]=[X]=33.6
-	int			nCMUseCount;
+	int			nCMMaxCount;
 	double		dUnPitchW;		//[W]=[Y]
 	double		dUnPitchL;		//[L]=[X]
 	double		dIndexPitch;	//Index Pitch(28)
@@ -254,6 +253,8 @@ typedef struct {
 	int		nInsTrayNo;
 	int		nInsLineNo;
 	int		nLotInfoBlockDelay;
+
+	BOOL	bUseAllPass;
 } GLOVAL_DATA;
 extern  GLOVAL_DATA	gData;
 

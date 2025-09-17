@@ -44,8 +44,7 @@ void CDataManager::Reset_EquipData()
 	m_EquipData.bUseBar2NG = FALSE;
 	m_EquipData.bUseMES = FALSE;
 	m_EquipData.bUseMesApd = FALSE;
-	m_EquipData.bUseDoorLock = FALSE;
-	m_EquipData.bUseContinueLot = FALSE;
+	m_EquipData.bUseDoorLock = FALSE;	
 
 	m_EquipData.dMoldTrigPeriod = 10.0;
 	m_EquipData.dMoldTrigWidth = 5.0;
@@ -110,9 +109,7 @@ BOOL CDataManager::Read_EquipData()
 	m_EquipData.bUseMesApd = INI.Get_Bool(strSection, "MES_APD", FALSE);
 	m_EquipData.bUseDoorLock = INI.Get_Bool(strSection, "DOOR_LOCK", FALSE);
 	gData.bUseDoorLock= m_EquipData.bUseDoorLock;
-	m_EquipData.bUseContinueLot = INI.Get_Bool(strSection, "CONTINUE_LOT", FALSE);
-//	gCM.bMESLog = INI.Get_Bool(strSection, "MES_LOG", FALSE);
-
+		
 	m_EquipData.sLotBarcodePort = INI.Get_String(strSection, "LOT_BARCODE_PORT", "");
 	m_EquipData.sNGBarcodePort  = INI.Get_String(strSection, "NG_BARCODE_PORT", "");
 
@@ -200,7 +197,7 @@ BOOL CDataManager::Read_ModelData()
 	gData.dTrayFirstW = 0; 
 	gData.dTrayFirstL = 0; 
 	gData.dCMSizeW    = m_ModelData.dCMWSize;
-	gData.nCMUseCount = m_ModelData.nCMCount;
+	gData.nCMMaxCount = m_ModelData.nCMCount;
 
 	return TRUE;
 }

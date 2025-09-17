@@ -59,6 +59,8 @@ void CMESInterface::Initialize(BOOL bMESUse)
 // Thread Function 
 UINT CMESInterface::Thread_MES(LPVOID lpVoid)
 {
+	CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
+
 	if (g_objMES.m_nMESSequence == 0) g_objMES.Clear_Result();	//수신 Folder All File 삭제
 
 	g_objMES.m_nReadCnt = 0;
@@ -67,6 +69,11 @@ UINT CMESInterface::Thread_MES(LPVOID lpVoid)
 		g_objMES.Read_Result();
 
 		g_objMES.m_nReadCnt++;
+
+#ifndef AJIN_BOARD_USE
+		break;
+#endif
+
 		if (g_objMES.m_nReadCnt >= TIME_OUT) break;
 		if (g_objMES.m_bStart==FALSE) break;
 	}
@@ -75,6 +82,7 @@ UINT CMESInterface::Thread_MES(LPVOID lpVoid)
 		return 0;
 	}
 
+#ifdef AJIN_BOARD_USE
 	CCommon *pCommon = CCommon::Get_Instance();
 	if (g_objMES.m_nReadCnt >= TIME_OUT) {			//TimeOver
 		g_objMES.m_nMESSequence = 0; g_objMES.m_pThreadMES = NULL;
@@ -91,16 +99,23 @@ UINT CMESInterface::Thread_MES(LPVOID lpVoid)
 		pCommon->Show_Error(993);
 		return 0;
 	}
-	if (g_objMES.m_nMESCount != g_objMES.m_nOperCount) {	//Lot정보 불일치
-		g_objMES.m_nMESSequence = 2; g_objMES.m_pThreadMES = NULL;
-		pCommon->Show_Error(994);
-		return 0;
-	}
+#endif	
+	//if (g_objMES.m_nMESCount != g_objMES.m_nOperCount) {	//Lot정보 불일치
+	//	g_objMES.m_nMESSequence = 2; g_objMES.m_pThreadMES = NULL;
+	//	pCommon->Show_Error(994);
+	//	return 0;
+	//}
+
+#ifndef AJIN_BOARD_USE
+	g_objMES.m_nMESCount = 55;
+#endif	
+	g_objMES.m_nOperCount = g_objMES.m_nMESCount;
+	pWorkDlg->UpdateLotInfoFromMES(g_objMES.m_nOperCount);
 
 	g_objMES.Start_Send();
 
 	g_objMES.m_nMESSequence = 3;
-	CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
+	
 	pWorkDlg->Set_AutoRunStatus(FALSE);
 
 	g_objMES.m_bThreadMES = FALSE; g_objMES.m_pThreadMES = NULL;
@@ -664,13 +679,13 @@ void CMESInterface::Set_Result(CString sLotID, CString sBarID, CString sJudge, C
 		nNGPno = gLot.nNGC+1;
 		nUTray = nUPno = 0;
 		gLot.nNGC++;
-		if (gLot.nNGC >= gData.nCMUseCount) { gLot.nNGT++; gLot.nNGC=0; }
+		if (gLot.nNGC >= gData.nCMMaxCount) { gLot.nNGT++; gLot.nNGC=0; }
 	} else {
 		nUTray = gLot.nGDT+1;
 		nUPno = gLot.nG1DC+1;
 		nNGTray = nNGPno = 0;
 		gLot.nG1DC++;
-		if (gLot.nG1DC >= gData.nCMUseCount) { gLot.nGDT++; gLot.nG1DC=0; }
+		if (gLot.nG1DC >= gData.nCMMaxCount) { gLot.nGDT++; gLot.nG1DC=0; }
 	}
 	m_sNGCode[m_nTCount] = sNGCode;
 	m_sNGText[m_nTCount] = NGText;
