@@ -116,6 +116,7 @@ BOOL CCMI4200LDlg::OnInitDialog()
 	sLog.Format("[Main Dialog] Program Start..   Version(%s)", MAIN_VERSION);
 	m_pLogFile->Save_HandlerLog(sLog);
 
+	gData.bUseAllPass = FALSE;
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 

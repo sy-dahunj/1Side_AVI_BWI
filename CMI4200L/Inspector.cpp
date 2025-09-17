@@ -68,15 +68,7 @@ END_MESSAGE_MAP()
 
 void CInspector::Initialize_Inspector()
 {
-
-	BOOL bVisionOpened;
-#if AJIN_BOARD_USE
-	bVisionOpened = m_UdpVision.Open_Socket(UDP_VISION_PORT, UDP_VISION_PORT, UDP_VISION_IP, this);
-#else
-	bVisionOpened = m_UdpVision.Open_Socket(9000, 9001, "127.0.0.1", this);
-#endif
-
-	
+	BOOL bVisionOpened = m_UdpVision.Open_Socket(UDP_VISION_PORT, UDP_VISION_PORT, UDP_VISION_IP, this);
 	//TEST=> BOOL bVisionOpened = m_UdpVision.Open_Socket(8000, 8001, UDP_VISION_IP, this);
 	if (bVisionOpened) Set_ConnectRequest(INSPECTOR_VISION);
 }
@@ -583,27 +575,23 @@ void CInspector::Get_InspectComplete(int nInspector, CString strRecv)
 
 	int nJugdeNo;
 	for(int i=0; i<gData.nPickCnt; i++) 
-	{
-		if (pEquipData->bUseContinueLot) {
-			if (gData.IndexInfo[x][i] > 0) { gData.IndexInfo[x][i] = 1; gLot.nGoodCnt++; }
+	{		
+		if		(sData[i] == "G") { nJugdeNo = 1; gLot.nGoodCnt++;	}	//Good
+		else if (sData[i] == "N") { nJugdeNo = 2; }					//NG
+		else if (sData[i] == "M") { nJugdeNo = 4; }					//MES Check:NG
+		else if (sData[i] == "B") { nJugdeNo = 5; }					//Barcode shift
+		else if (sData[i] == "A") { nJugdeNo = 7; }					//Barrel Lens
+		else if (sData[i] == "S") { nJugdeNo = 8; }					//Side Fill	(R12A)
+		else if (sData[i] == "T") { nJugdeNo = 11;}					//Stiffener 측정 (R12C)
+		else if (sData[i] == "R") { nJugdeNo = 12;}					//Lens 원자재 (R13B)
+		else if (sData[i] == "F") { nJugdeNo = 13;}					//Lens Fiducial Notch Broken (F24)
+		else if (sData[i] == "H") { nJugdeNo = 14;}					//Shiny Edge (F24)
+		else if (sData[i] == "E") { nJugdeNo = 3;}					//Empty
+		else					  { nJugdeNo = 2;}
 
-		} else {
-			if		(sData[i] == "G") { nJugdeNo = 1; gLot.nGoodCnt++;	}	//Good
-			else if (sData[i] == "N") { nJugdeNo = 2; }					//NG
-			else if (sData[i] == "M") { nJugdeNo = 4; }					//MES Check:NG
-			else if (sData[i] == "B") { nJugdeNo = 5; }					//Barcode shift
-			else if (sData[i] == "A") { nJugdeNo = 7; }					//Barrel Lens
-			else if (sData[i] == "S") { nJugdeNo = 8; }					//Side Fill	(R12A)
-			else if (sData[i] == "T") { nJugdeNo = 11;}					//Stiffener 측정 (R12C)
-			else if (sData[i] == "R") { nJugdeNo = 12;}					//Lens 원자재 (R13B)
-			else if (sData[i] == "F") { nJugdeNo = 13;}					//Lens Fiducial Notch Broken (F24)
-			else if (sData[i] == "H") { nJugdeNo = 14;}					//Shiny Edge (F24)
-			else if (sData[i] == "E") { nJugdeNo = 3;}					//Empty
-			else					  { nJugdeNo = 2;}
+		if		(nJugdeNo == 1) g_objMES.Set_Result(gLot.sLotID, sBarcode[i], "OK", sNGcode[i], sNGText[i], nTrayNo, (cm+i+1), 0,0,0,0);
+		else if (nJugdeNo != 3) g_objMES.Set_Result(gLot.sLotID, sBarcode[i], "NG", sNGcode[i], sNGText[i], nTrayNo, (cm+i+1), 0,0,0,0);
 
-			if		(nJugdeNo == 1) g_objMES.Set_Result(gLot.sLotID, sBarcode[i], "OK", sNGcode[i], sNGText[i], nTrayNo, (cm+i+1), 0,0,0,0);
-			else if (nJugdeNo != 3) g_objMES.Set_Result(gLot.sLotID, sBarcode[i], "NG", sNGcode[i], sNGText[i], nTrayNo, (cm+i+1), 0,0,0,0);
-		}
 		gLot.nInsResult[nTrayNo-1][cm+i] = gLot.nBarResult[nTrayNo-1][cm+i] = nJugdeNo;
 		gLot.sBarLoad[nTrayNo-1][cm+i] = sBarcode[i];
 		if(sBarcode[i] =="NOREAD")

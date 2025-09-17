@@ -1,5 +1,5 @@
 // Common.h : 헤더 파일
-// bb
+//
 #pragma once
 
 #include "afxinet.h"	// FTP Connection
