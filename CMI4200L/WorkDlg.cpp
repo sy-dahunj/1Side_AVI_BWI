@@ -16,6 +16,7 @@
 #include "MESInterface.h"
 #include "Inspector.h"
 #include "CapAttachUDP.h"
+//#include "FileSenderClient.h"
 
 // CWorkDlg 대화 상자입니다.
 
@@ -220,6 +221,7 @@ BEGIN_MESSAGE_MAP(CWorkDlg, CDialogEx)
 	ON_MESSAGE(UM_UPDATE_LOTID, OnUpdateLotID)
 	ON_MESSAGE(UM_LOT_START_END, &CWorkDlg::OnLotStartEnd)
 
+	ON_BN_CLICKED(IDC_BTN_SEND1, &CWorkDlg::OnBnClickedBtnSend1)
 END_MESSAGE_MAP()
 
 // CWorkDlg 메시지 처리기입니다.
@@ -253,6 +255,30 @@ BOOL CWorkDlg::OnInitDialog()
 	gData.nTrayJobCount = gData.nCMJobCount = 0;
 	m_sCurLotID = "";
 	gData.nLotIdsIndex = 0;
+
+	if (!AfxSocketInit()) {
+		AfxMessageBox(("Winsock 초기화 실패"));
+		return FALSE;
+	}
+
+#if AJIN_BOARD_USE
+	CString ip = "192.168.1.12", 21000);
+	UINT port = 21000;
+#else
+	CString ip = "192.168.0.108";
+	UINT port = 21000;
+#endif
+
+	if (!m_sender.Create()) { AfxMessageBox("소켓 생성 실패"); return FALSE; }
+
+	if (m_sender.Connect(ip, port) == FALSE) 
+	{
+		if (GetLastError() != WSAEWOULDBLOCK) 
+		{
+			AfxMessageBox("Connect 실패");
+			return FALSE;
+		}
+	}
 #ifdef PICKER_4
 	m_ledIndexSlot[0][4].ShowWindow(FALSE);
 	m_ledIndexSlot[1][4].ShowWindow(FALSE);
@@ -1708,4 +1734,36 @@ void CWorkDlg::OnBnClickedBtnBuzzerOff()
 	CLogFile *pLogFile = CLogFile::Get_Instance();
 	pLogFile->Save_Interlock(1);
 #endif
+}
+
+void CWorkDlg::OnBnClickedBtnSend1()
+{
+	FileSend();
+}
+
+void CWorkDlg::FileSend()
+{	
+	
+#if AJIN_BOARD_USE
+	m_sender.Connect("192.168.1.12", 21000);
+	BOOL ret = m_sender.BeginSend(g_objMES.m_sMESDownLoadFile);
+	m_sender.AsyncSelect(FD_WRITE | FD_CLOSE);
+
+	if (ret == TRUE) { // 보조 함수 만들거나 상태값 노출
+		m_sender.ShutDown();     // SD_SEND
+		m_sender.Close();
+	}
+	m_sender.Create();
+#else
+	m_sender.Connect("192.168.0.108", 21000);
+	BOOL ret = m_sender.BeginSend("D:\\MES\\RecipeDownload\\RECIPEDOWNLOAD_20250904_09333865.ini");
+	m_sender.AsyncSelect(FD_WRITE | FD_CLOSE);
+
+	if (ret == TRUE) { // 보조 함수 만들거나 상태값 노출
+		m_sender.ShutDown();     // SD_SEND
+		m_sender.Close();
+	}
+	m_sender.Create();
+#endif
+
 }

@@ -14,7 +14,6 @@ private:
 	CString	m_sOperID;
 	int		m_nOperCount;
 	CString	m_sResultFileName;
-
 	// APD Data
 	int		m_nTCount;
 	int		m_nSNo;
@@ -33,6 +32,7 @@ private:
 	int		m_nNGPocket[500];
 
 	void Read_Result();
+	void RecipeDownloadFileSearch();
 	void Clear_Result();
 	void Write_APD();
 	void Start_Send();
@@ -55,7 +55,7 @@ protected:
 
 public:
 	BOOL	m_bMESUse, m_bStart;
-	CString	m_sMESResult, m_sMESLotID, m_sReasonCode, m_sReasonText;	//m_MESResult:0[OK], 1[NG]
+	CString	m_sMesValidationType, m_sMESResult, m_sMESLotID, m_sReasonCode, m_sReasonText, m_sMESDownLoadFile;	//m_MESResult:0[OK], 1[NG]
 	int		m_nMESCount, m_nMESSequence;	//0:Idle, 1:Start, 2:Started
 
 	void Initialize(BOOL bMESUse);		//pEquipData->bUseMES

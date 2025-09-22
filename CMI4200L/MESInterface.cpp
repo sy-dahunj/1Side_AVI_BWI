@@ -14,6 +14,7 @@
 #define MES_FOLDER_LOG			"D:\\MES\\LOG\\"
 #define STATUS_FOLDER			"D:\\MES\\STATUS\\"
 #define APD_FOLDER				"D:\\MES\\DATA\\"
+#define MES_DOWNLOAD_FOLDER		"D:\\MES\\RECIPEDOWNLOAD"
 #define MES_FOLDER_APD			"D:\\MES\\APD\\"
 #define MES_FOLDER_RMS			"D:\\MES\\Recipe\\"
 #define MES_FOLDER_APD_RESULT	"D:\\EVMS\\TP\\MES\\VALIDATION\\"
@@ -82,6 +83,11 @@ UINT CMESInterface::Thread_MES(LPVOID lpVoid)
 		return 0;
 	}
 	if (g_objMES.m_sMESResult == "1") {				//LotÃë¼Ò
+		if(g_objMES.m_sMesValidationType =="2" ){
+			g_objMES.RecipeDownloadFileSearch();
+			CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
+			pWorkDlg->FileSend();         //Recipe Vision Send
+		}
 		g_objMES.m_nMESSequence = 0; g_objMES.m_pThreadMES = NULL;
 		pCommon->Show_Error(992);
 		return 0;
@@ -161,6 +167,7 @@ void CMESInterface::Clear_Result()
 	m_nTCount = m_nSNo = m_nReadCnt = 0;
 
 	FileAllDelete(RESULT_FOLDER);
+	FileAllDelete(MES_DOWNLOAD_FOLDER);
 }
 
 void CMESInterface::Read_Result()
@@ -193,7 +200,7 @@ void CMESInterface::Read_Result()
 			AfxExtractSubString(sResult[i-1], sDataA, 0, chSepB);
 		}
 	}
-
+	m_sMesValidationType = sResult[0];
 	m_sMESResult = sResult[1];
 	m_sReasonCode = sResult[2];
 //	m_sReasonText = sResult[3];
@@ -863,3 +870,25 @@ void CMESInterface::ResultFileSearch()
         }
     }
 }
+void CMESInterface::RecipeDownloadFileSearch()
+{
+	BOOL bRes;
+    CString path, file_path, file_name;
+
+	m_sResultFileName = "";
+    path.Format("%s*.*", MES_DOWNLOAD_FOLDER);
+    CFileFind finder;
+    bRes = finder.FindFile(path);
+
+    while(bRes) {
+        bRes = finder.FindNextFile();
+        if(!finder.IsDirectory()) {
+            file_name = finder.GetFileName();
+            file_path.Format("%s%s", MES_DOWNLOAD_FOLDER, file_name);
+
+			m_sMESDownLoadFile = file_path;
+			return;
+        }
+    }
+}
+

@@ -1,0 +1,3 @@
+[09:17:18 678] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[09:17:22 261] [Main Dialog] Work Mode start
+[09:17:26 936] [Main Dialog] Program Exit

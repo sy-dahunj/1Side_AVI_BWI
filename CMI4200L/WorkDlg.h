@@ -4,6 +4,7 @@
 #pragma once
 
 #include "LogFile.h"
+#include "FileSendSocket.h"
 
 #define UM_UPDATE_MODEL			WM_USER+1
 #define UM_UPDATE_RFID			WM_USER+2
@@ -151,8 +152,13 @@ public:
 	void AutoStop();
 	void Clear_LotInfo();
 
+	void FileSend();
+
 	void Enable_LotInfo(BOOL on);
 
+public: 
+	CFileSendSocket m_sender;
+	afx_msg void OnBnClickedBtnSend1();
 };
 
 ///////////////////////////////////////////////////////////////////////////////

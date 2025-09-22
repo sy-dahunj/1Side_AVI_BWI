@@ -1,0 +1,18 @@
+[09:34:40 047] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[09:34:44 609] [Main Dialog] Work Mode start
+[09:34:45 353] [Main Dialog] Manual Mode start
+[09:34:45 986] [Main Dialog] Work Mode start
+[10:05:13 174] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[10:05:19 013] [Main Dialog] Work Mode start
+[10:06:31 340] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[10:06:35 430] [Main Dialog] Work Mode start
+[10:07:37 916] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[10:07:41 911] [Main Dialog] Work Mode start
+[10:10:22 781] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[10:10:27 116] [Main Dialog] Work Mode start
+[10:21:08 209] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[10:21:11 941] [Main Dialog] Work Mode start
+[10:25:14 849] [Main Dialog] Program Exit
+[10:25:41 008] [Main Dialog] Program Start..   Version(V3.4.30.a2)
+[10:25:44 261] [Main Dialog] Work Mode start
+[10:28:38 208] [Main Dialog] Program Exit
