@@ -46,6 +46,7 @@ private:
 	void MakeFolder(CString sPath);
 	void FileAllDelete(CString sPath);
 	void ResultFileSearch();
+	void RecipeDownloadFileSearch();
 	char* UTF8ToANSI(const char *pszCode);
 
 protected:
@@ -55,7 +56,7 @@ protected:
 
 public:
 	BOOL	m_bMESUse, m_bStart;
-	CString	m_sMESResult, m_sMESLotID, m_sReasonCode, m_sReasonText;	//m_MESResult:0[OK], 1[NG]
+	CString	m_sMesValidationType ,m_sMESResult, m_sMESLotID, m_sReasonCode, m_sReasonText, m_sMESDownLoadFile;	//m_MESResult:0[OK], 1[NG]
 	int		m_nMESCount, m_nMESSequence;	//0:Idle, 1:Start, 2:Started
 
 	void Initialize(BOOL bMESUse);		//pEquipData->bUseMES

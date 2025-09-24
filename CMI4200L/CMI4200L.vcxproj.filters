@@ -324,6 +324,12 @@
     <ClInclude Include="ManualUnloadTrayDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="FileSendSocket.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\NetEndian.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMI4200L.cpp">
@@ -498,6 +504,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ManualUnloadTrayDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSendSocket.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
