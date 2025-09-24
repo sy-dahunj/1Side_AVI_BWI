@@ -159,6 +159,8 @@ public:
 public: 
 	CFileSendSocket m_sender;
 	afx_msg void OnBnClickedBtnSend1();
+	BOOL ConnectToServer(CString ip, UINT port);
+    BOOL SendFile(CString filePath);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -46,7 +46,6 @@ BOOL CFileSendSocket::BeginSend(const CString& path, const CString& sendName) {
 	OnSend(0);
 	AsyncSelect(FD_WRITE | FD_CLOSE);
 
-	
 	if (m_in.m_hFile != CFile::hFileNull) 
 	{		
 		m_in.Close();
@@ -59,7 +58,7 @@ BOOL CFileSendSocket::BeginSend(const CString& path, const CString& sendName) {
 	m_dataSent =0; 
 	m_hdr.fileSizeN = 0;
 	m_hdr.nameLenN  = 0;
-	
+
 	return TRUE;
 }
 
@@ -131,6 +130,73 @@ void CFileSendSocket::OnSend(int nErrorCode) {
 }
 
 void CFileSendSocket::OnClose(int nErrorCode) {
-	if (m_in.m_hFile != CFile::hFileNull) m_in.Close();
+	m_bConnected = FALSE;
+	if (m_in.m_hFile != CFile::hFileNull) 
+		m_in.Close();
 	CAsyncSocket::OnClose(nErrorCode);
+}
+BOOL CFileSendSocket::ConnectToServer(LPCTSTR ip, UINT port)
+{
+    if (m_hSocket != INVALID_SOCKET) {
+        ShutDown();
+        Close();
+    }
+
+    if (!Create()) {
+        AfxMessageBox("소켓 생성 실패");
+        return FALSE;
+    }
+
+    if (!Connect(ip, port)) {
+        int err = GetLastError();
+        if (err != WSAEWOULDBLOCK) {
+            AfxMessageBox("Connect 실패");
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
+
+BOOL CFileSendSocket::SendFile(const CString& path)
+{
+#ifdef AJIN_BOARD_USE
+	CString ip = "192.168.1.12";
+	UINT port = 21000;
+#else
+	CString ip = "127.0.0.1";
+	UINT port = 21000;
+#endif
+
+    if (!m_bConnected) {
+        m_lastFilePath = path;
+        if (!ConnectToServer(ip, port))
+            return FALSE;
+        return FALSE;
+    }
+	AsyncSelect(FD_WRITE | FD_CLOSE);
+    BOOL ret = BeginSend(path);
+    if (!ret) {
+        AfxMessageBox("파일 전송 실패");
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+void CFileSendSocket::OnConnect(int nErrorCode)
+{
+    if (nErrorCode == 0) {
+        m_bConnected = TRUE;
+
+        if (!m_lastFilePath.IsEmpty()) {
+            BeginSend(m_lastFilePath);
+            AsyncSelect(FD_WRITE | FD_CLOSE);
+            m_lastFilePath.Empty();
+        }
+    }
+    else {
+        m_bConnected = FALSE;
+    }
+
+    CAsyncSocket::OnConnect(nErrorCode);
 }

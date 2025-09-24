@@ -16,13 +16,17 @@ public:
 	virtual ~CFileSendSocket();
 
 	BOOL BeginSend(const CString& path, const CString& sendName = _T(""));
-
+	BOOL ConnectToServer(LPCTSTR ip, UINT port);  
+    BOOL SendFile(const CString& path);         
+	void Disconnect();    
 protected:
 	virtual void OnSend(int nErrorCode);
 	virtual void OnClose(int nErrorCode);
-
+	virtual void OnConnect(int nErrorCode);
 private:
 	SEND_STATE m_state;
+	BOOL m_bConnected;
+    CString m_lastFilePath; 
 
 	CFile    m_in;
 	uint64_t m_fileSize;

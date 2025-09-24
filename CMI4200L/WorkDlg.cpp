@@ -260,12 +260,12 @@ BOOL CWorkDlg::OnInitDialog()
 		AfxMessageBox(("Winsock 초기화 실패"));
 		return FALSE;
 	}
-
-#if AJIN_BOARD_USE
-	CString ip = "192.168.1.12", 21000);
+//
+#ifdef AJIN_BOARD_USE
+	CString ip = "192.168.1.12";
 	UINT port = 21000;
 #else
-	CString ip = "192.168.0.108";
+	CString ip = "127.0.0.1";
 	UINT port = 21000;
 #endif
 
@@ -279,6 +279,7 @@ BOOL CWorkDlg::OnInitDialog()
 			return FALSE;
 		}
 	}
+
 #ifdef PICKER_4
 	m_ledIndexSlot[0][4].ShowWindow(FALSE);
 	m_ledIndexSlot[1][4].ShowWindow(FALSE);
@@ -1738,32 +1739,19 @@ void CWorkDlg::OnBnClickedBtnBuzzerOff()
 
 void CWorkDlg::OnBnClickedBtnSend1()
 {
-	FileSend();
+	CString filePath = _T("D:\\MES\\RecipeDownload\\RECIPEDOWNLOAD_20250904_09333865.ini");
+    m_sender.SendFile(filePath);
+
+	CString strMsg, strLog;
+	strMsg.Format("Autofile Send", filePath);
+	strLog.Format("Autofile Send %s", strMsg);
+	pLogFile->Save_TestLog(strLog);
 }
 
 void CWorkDlg::FileSend()
 {	
-	
-#if AJIN_BOARD_USE
-	m_sender.Connect("192.168.1.12", 21000);
-	BOOL ret = m_sender.BeginSend(g_objMES.m_sMESDownLoadFile);
-	m_sender.AsyncSelect(FD_WRITE | FD_CLOSE);
-
-	if (ret == TRUE) { // 보조 함수 만들거나 상태값 노출
-		m_sender.ShutDown();     // SD_SEND
-		m_sender.Close();
-	}
-	m_sender.Create();
-#else
-	m_sender.Connect("192.168.0.108", 21000);
-	BOOL ret = m_sender.BeginSend("D:\\MES\\RecipeDownload\\RECIPEDOWNLOAD_20250904_09333865.ini");
-	m_sender.AsyncSelect(FD_WRITE | FD_CLOSE);
-
-	if (ret == TRUE) { // 보조 함수 만들거나 상태값 노출
-		m_sender.ShutDown();     // SD_SEND
-		m_sender.Close();
-	}
-	m_sender.Create();
-#endif
+	CString filePath;
+	filePath = g_objMES.m_sMESDownLoadFile;
+    m_sender.SendFile(filePath);
 
 }
