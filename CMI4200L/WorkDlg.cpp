@@ -1717,16 +1717,251 @@ void CWorkDlg::ResetLotInfo()
 	m_stcCMCnt.SetWindowText(sTemp);
 	m_stcLotId2.SetWindowText(sTemp);
 }
+//void CWorkDlg::TestRead()
+//{
+//	CString strFile, strData, sDataA, sResult[10];
+//
+//	TestFileSearch();
+//	if(m_s4.GetLength() < 4) return;
+//
+//	strFile = m_s4;
+//	CFile file;
+//	if (!file.Open(strFile, CFile::modeRead)) return;
+//
+//	int nSize = (int)file.GetLength();
+//	char *pBuff = new char[nSize + 1];
+//	pBuff[nSize] = '\0';
+//
+//	file.Read(pBuff, nSize);
+//	strData.Format("%s", pBuff);
+//	strData.Replace("\r\n", ",");
+//
+//	file.Close();
+//	delete pBuff;
+//
+//	char chSepA = '=';
+//	char chSepB = ',';
+//	for(int i=0; i<8; i++) {
+//		AfxExtractSubString(sDataA, strData, i, chSepA);
+//		if (i>0) {
+//			AfxExtractSubString(sResult[i-1], sDataA, 0, chSepB);
+//		}
+//	}
+//	m_s1 = sResult[0];
+//	m_s2 = sResult[1];
+//	m_s3 = sResult[2];
+//}
+//void CWorkDlg::TestFileSearch()
+//{
+//	BOOL bRes;
+//    CString path, file_path, file_name;
+//
+//	m_s4 = "";
+//    path.Format("%s*.*", "D:\\MES\\VALIDATION\\");
+//    CFileFind finder;
+//    bRes = finder.FindFile(path);
+//
+//    while(bRes) {
+//        bRes = finder.FindNextFile();
+//        if(!finder.IsDirectory()) {
+//            file_name = finder.GetFileName();
+//            file_path.Format("%s%s", "D:\\MES\\VALIDATION\\", file_name);
+//
+//			m_s4 = file_path;
+//			return;
+//        }
+//    }
+//}
+//void CWorkDlg::TestDownloadFileSearch()
+//{
+//	BOOL bRes;
+//    CString path, file_path, file_name;
+//
+//	m_s4 = "";
+//    path.Format("%s*.*", "D:\\MES\\RECIPEDOWNLOAD");
+//    CFileFind finder;
+//    bRes = finder.FindFile(path);
+//
+//    while(bRes) {
+//        bRes = finder.FindNextFile();
+//        if(!finder.IsDirectory()) {
+//            file_name = finder.GetFileName();
+//            file_path.Format("%s%s", "D:\\MES\\RECIPEDOWNLOAD", file_name);
+//
+//			m_s4 = file_path;
+//
+//			return;
+//        }
+//    }
+//}
+void CWorkDlg::RecipeFileAllDelete(CString sPath)
+{
+	BOOL bRes;
+    CString path, file_path, file_name,sLog;
 
+    path.Format("%s*.*", sPath);
+    CFileFind finder;
+    bRes = finder.FindFile(path);
 
+    while(bRes) {
+        bRes = finder.FindNextFile();
+        if(!finder.IsDirectory()) {
+            file_name = finder.GetFileName();
+            file_path.Format("%s%s", sPath, file_name);
+
+			if (!DeleteFile(file_path))
+				{
+					DWORD err = GetLastError();
+					CString sLog;
+					sLog.Format("기존 벨리데이션 삭제 실패 (에러 코드: %lu)", err);
+					pLogFile->Save_TestLog(sLog);
+					return;
+				}
+        }
+    }
+}
 void CWorkDlg::OnBnClickedBtnSend1()
 {
-	CString filePath = _T("D:\\MES\\RecipeDownload\\RECIPEDOWNLOAD_20250904_09333865.ini");
-    m_sender.SendFile(filePath);
+	g_objMES.Read_Result();
+	g_objMES.RecipeDownloadFileSearch();
+	//	m_sMesValidationType = sResult[0];
+	//m_sMESResult = sResult[1];
+	//m_sMESDownLoadFile
+	//TestRead();
+	//TestDownloadFileSearch();
+	if (g_objMES.m_sMESResult == "1")
+	{				
+		if(g_objMES.m_sMesValidationType == "2" )
+		{
+			CString filePath = g_objMES.m_sMESDownLoadFile;//"D:\\MES\\RecipeDownload\\test.ini";
+
+			if (filePath.IsEmpty())
+			{
+				CString sLog;
+				sLog.Format("Current_Recipe.txt Delete Error");
+				pLogFile->Save_TestLog(sLog);
+				return;
+			}
+
+			if (!m_sender.SendFile(filePath))
+			{
+				CString sLog;
+				sLog.Format("Current_Recipe.txt Delete Error");
+				pLogFile->Save_TestLog(sLog);
+				return;
+			}
+			/*CString TT = _T("D:\\MES\\VALIDATION\\");
+			CString targetDir = _T("D:\\MES\\Recipe\\");
+			CString destFileName = _T("Current_Recipe.txt");
+			CString destPath;
+			destPath.Format(_T("%s%s"), targetDir, destFileName);
+
+			if (GetFileAttributes(targetDir) == INVALID_FILE_ATTRIBUTES)
+			{
+				CreateDirectory(targetDir, NULL);
+			}
+
+			if (GetFileAttributes(destPath) != INVALID_FILE_ATTRIBUTES)
+			{
+				if (!DeleteFile(destPath))
+				{
+					DWORD err = GetLastError();
+					CString msg;
+					msg.Format(_T("기존 Current_Recipe.txt 삭제 실패 (에러 코드: %lu)"), err);
+					AfxMessageBox(msg);
+					return;
+				}
+			}
+
+			if (!CopyFile(filePath, destPath, FALSE))
+			{  
+				DWORD err = GetLastError();
+				CString msg;
+				msg.Format(_T("파일 복사 실패 (에러 코드: %lu)"), err);
+				AfxMessageBox(msg);
+				return;
+			}
+
+			if (GetFileAttributes(filePath) != INVALID_FILE_ATTRIBUTES)
+			{
+				if (!DeleteFile(filePath))
+				{
+					DWORD err = GetLastError();
+					CString msg;
+					msg.Format(_T("원본 파일 삭제 실패 (에러 코드: %lu)"), err);
+					AfxMessageBox(msg);
+					return;
+				}
+			}
+			g_objMES.Clear_Result();
+			RecipeFileAllDelete("D:\\MES\\VALIDATION\\");*/
+
+			AfxMessageBox(_T("파일 전송, Current_Recipe.txt 갱신 및 원본 삭제 완료."));
+		}
+	}
 }
-void CWorkDlg::FileSend()
-{	
-	CString filePath;
-	filePath = g_objMES.m_sMESDownLoadFile;
-    m_sender.SendFile(filePath);
+void CWorkDlg::RecipeFileSend()
+{
+	g_objMES.Read_Result();
+	g_objMES.RecipeDownloadFileSearch();
+	CString sLog;
+	CString filePath = g_objMES.m_sMESDownLoadFile;//"D:\\MES\\RecipeDownload\\test.ini";
+	sLog.Format("Recipe Down Path: %s", filePath);
+	pLogFile->Save_TestLog(sLog);
+	if (filePath.IsEmpty())
+	{
+		sLog.Format("Current_Recipe.txt File Empty Error");
+		pLogFile->Save_TestLog(sLog);
+		return;
+	}
+
+	if (!m_sender.SendFile(filePath))
+	{
+		CString sLog;
+		sLog.Format("Current_Recipe.txt File Send Error");
+		pLogFile->Save_TestLog(sLog);;
+		return;
+	}
+	CString TT = _T("D:\\MES\\VALIDATION\\");
+	CString targetDir = _T("D:\\MES\\Recipe\\");
+	CString destFileName = _T("Current_Recipe.txt");
+	CString destPath;
+	destPath.Format(_T("%s%s"), targetDir, destFileName);
+
+	if (GetFileAttributes(targetDir) == INVALID_FILE_ATTRIBUTES)
+	{
+		CreateDirectory(targetDir, NULL);
+	}
+
+	if (GetFileAttributes(destPath) != INVALID_FILE_ATTRIBUTES)
+	{
+		if (!DeleteFile(destPath))
+		{
+			DWORD err = GetLastError();
+			sLog.Format("기존 Current_Recipe.txt 삭제 실패 (에러 코드: %lu)", err);
+			pLogFile->Save_TestLog(sLog);
+			return;
+		}
+	}
+
+	if (!CopyFile(filePath, destPath, FALSE))
+	{  
+		DWORD err = GetLastError();
+		sLog.Format("파일 복사 실패 (에러 코드: %lu)", err);
+		pLogFile->Save_TestLog(sLog);
+		return;
+	}
+
+	if (GetFileAttributes(filePath) != INVALID_FILE_ATTRIBUTES)
+	{
+		if (!DeleteFile(filePath))
+		{
+			DWORD err = GetLastError();
+			sLog.Format("원본 Current_Recipe 파일 삭제 실패 (에러 코드: %lu)", err);
+			pLogFile->Save_TestLog(sLog);
+			return;
+		}
+	}
+	RecipeFileAllDelete("D:\\MES\\VALIDATION\\");
+	AfxMessageBox(_T("파일 전송, Current_Recipe.txt 갱신 및 원본 삭제 완료."));
 }

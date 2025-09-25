@@ -150,8 +150,12 @@ public:
 	void ResetInfoDisplay();
 	void ResetLotInfo();
 
-	void FileSend();
-
+	CString	m_s1 ,m_s2, m_s3, m_s4,m_s5,m_s6;
+	void TestRead();
+	void TestFileSearch();
+	void TestDownloadFileSearch();
+	void RecipeFileSend();
+	void RecipeFileAllDelete(CString sPath);
 	CFileSendSocket m_sender;
 	afx_msg void OnBnClickedBtnSend1();
 };

@@ -4,7 +4,7 @@
 #include "CMI4200L.h"
 #include "ErrorDlg.h"
 #include "afxdialogex.h"
-
+#include "WorkDlg.h"
 #include "CMI4200LDlg.h"
 #include "Inspector.h"
 #include "AJinAXL.h"
@@ -12,7 +12,6 @@
 #include "LogFile.h"
 #include "SequenceMain.h"
 #include "MESInterface.h"
-
 // CErrorDlg 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CErrorDlg, CDialogEx)
@@ -199,10 +198,11 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 				strLog = m_strErrSubMsg;
 			}
 
-			if(m_nErrNo > 990 && m_nErrNo < 995) {
+			if(m_nErrNo > 990 && m_nErrNo < 996) {
 				if(m_nErrNo == 992) { g_objMES.m_sReasonText.TrimRight(); strLog.Format("==> Reason[%s] Text[%s]..", g_objMES.m_sReasonCode, g_objMES.m_sReasonText); }
 				if(m_nErrNo == 993) strLog.Format("==> User_LotID[%s] != MES_LotID[%s]..", gData.sLotID, g_objMES.m_sMESLotID);
 				if(m_nErrNo == 994) strLog.Format("==> User_Count[%d] != MES_Count[%d]..", gData.nCMJobCount, g_objMES.m_nMESCount);
+				if(m_nErrNo == 995) strLog.Format("==> Recipe Error");
 			}
 
 			m_strErrMsg.Format("%s %s",sTotLog, strLog);
@@ -403,7 +403,10 @@ void CErrorDlg::OnBnClickedBtnErrOk()
  			pSequenceMain->Set_RunCase(AUTO_NGTRAY, 100);
  		}
 	}
-
+	if(m_nErrNo == 995 ||m_nErrNo == 2350){ //RecipeDownloadFile Send
+		CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
+		pWorkDlg->RecipeFileSend();  
+	}
 	ShowWindow(SW_HIDE);
 }
 
@@ -525,3 +528,4 @@ void CErrorDlg::Load_ErrorImage(int nErrNo)
 
 }
 ///////////////////////////////////////////////////////////////////////////////
+//

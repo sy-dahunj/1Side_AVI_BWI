@@ -2,6 +2,7 @@
 //
 #pragma once
 
+#include "FileSendSocket.h"
 // CErrorDlg 대화 상자입니다.
 
 class CErrorDlg : public CDialogEx
@@ -65,6 +66,7 @@ public:
 	void Set_ErrorMessage(CString sErrMsg) { m_strErrMsg = sErrMsg; }
 	void Set_ErrorSubMessage(CString sErrMsg) { m_strErrSubMsg = sErrMsg; }
 	void Set_ErrorLog(CString sErrNo, CString sErrMsg);
+	
 };
 
 ///////////////////////////////////////////////////////////////////////////////
