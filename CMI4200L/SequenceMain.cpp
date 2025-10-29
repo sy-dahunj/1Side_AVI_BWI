@@ -5413,6 +5413,7 @@ BOOL CSequenceMain::ULPicker_Run()
 				m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
 				break;
 			}
+
 			for(int i=0; i<gData.nPickCnt; i++) 
 			{
 				int w = gData.nTrayPos[3]-1;
