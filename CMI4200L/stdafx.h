@@ -155,6 +155,9 @@ typedef struct {
 	int			GoodTrayInfo[20][20];	//0:Empty, 1:OK, 2:NG, 3:검사전 CM, 4:전공정 NG [y][x]=[w][l]
 
 	int			nNGTrayPos;				//0:Ready 1:NG1(Front), 2:NG2(Rear), 3:Moving (NG Tray 위치)
+
+	int			nPosX_LoadTray;	
+
 	int			nTrayPos[4];			//0:Load 1:NG1 2:NG2, 3:Unload Tray (세로x=l 1^8 줄번호)
 
 	int			nTotalCount;

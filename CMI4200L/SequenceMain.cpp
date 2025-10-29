@@ -817,7 +817,7 @@ BOOL CSequenceMain::Load1_Run()
 
 	case 290:
 		if (m_pCommon->Check_Position(AX_LOAD_TRAY_X1, 2)) {
-			gData.nTrayPos[0] = 1;
+			gData.nPosX_LoadTray = 1;
 			Set_LoadTray();
 			if(m_nLDPickerCase==100) m_nLDPickerCase=110;
 			m_sLog.Format("m_nLoad1Case,%d",m_nLoad1Case); pLogFile->Save_MCCLog(m_sLog);
@@ -833,13 +833,13 @@ BOOL CSequenceMain::Load1_Run()
 		pStatus = m_pAJinAXL->Get_pStatus(AX_LOAD_TRAY_Z2);
 		dPosZ2 = pStatus->dPos;
 		if(dPosZ2 < 10 || m_nLoad2Case<300 || m_nLoad2Case>430) {
-			gData.nTrayPos[0]++;
-			if (gData.nTrayPos[0] > gData.nArrayW) {	// Load 줄번호
+			gData.nPosX_LoadTray++;
+			if (gData.nPosX_LoadTray > gData.nArrayW) {	// Load 줄번호
 				m_sLog.Format("m_nLoad1Case,%d",m_nLoad1Case); pLogFile->Save_MCCLog(m_sLog);
 				m_nLoad1Case = 350;
 				m_pCommon->Set_LoopTime(AUTO_LOAD1, 30000);
 			} else {
-				m_pCommon->PickerLoad_Move(1, gData.nTrayPos[0], 1);
+				m_pCommon->PickerLoad_Move(1, gData.nPosX_LoadTray, 1);
 				m_dLoadTrayX[0] = m_pCommon->m_dP1X[0];
 				//m_pAJinAXL->Move_Absolute(AX_LOAD_TRAY_X1, m_dLoadTrayX);
 				m_pAJinAXL->Move_Abs_Accel(AX_LOAD_TRAY_X1, m_dLoadTrayX[0], m_pMoveData->dDLoadTrayX1[2]);
@@ -867,7 +867,7 @@ BOOL CSequenceMain::Load1_Run()
 		break;
 	case 360:
 		if (m_pCommon->Check_Position(AX_LOAD_TRAY_X1, 3)) {
-			gData.nTrayPos[0] = 0;
+			gData.nPosX_LoadTray = 0;
 
 			m_pDY1->oLS_Z1AlignS12In = FALSE;
 			m_pDY1->oLS_Z1AlignS12Out = TRUE;
@@ -1274,7 +1274,7 @@ BOOL CSequenceMain::Load2_Run()
 
 	case 290:
 		if (m_pCommon->Check_Position(AX_LOAD_TRAY_X2, 2)) {
-			gData.nTrayPos[0] = 1;
+			gData.nPosX_LoadTray = 1;
 			Set_LoadTray();
 			if(m_nLDPickerCase==100) m_nLDPickerCase=110;
 			m_sLog.Format("m_nLoad2Case,%d",m_nLoad2Case); pLogFile->Save_MCCLog(m_sLog);
@@ -1290,13 +1290,13 @@ BOOL CSequenceMain::Load2_Run()
 		pStatus = m_pAJinAXL->Get_pStatus(AX_LOAD_TRAY_Z1);
 		dPosZ1 = pStatus->dPos;
 		if(dPosZ1 < 10 || m_nLoad1Case<300 || m_nLoad1Case>430) {
-			gData.nTrayPos[0]++;
-			if (gData.nTrayPos[0] > gData.nArrayW) {	// Load 줄번호
+			gData.nPosX_LoadTray++;
+			if (gData.nPosX_LoadTray > gData.nArrayW) {	// Load 줄번호
 				m_sLog.Format("m_nLoad2Case,%d",m_nLoad2Case); pLogFile->Save_MCCLog(m_sLog);
 				m_nLoad2Case = 350;
 				m_pCommon->Set_LoopTime(AUTO_LOAD2, 30000);
 			} else {
-				m_pCommon->PickerLoad_Move(1, gData.nTrayPos[0], 2);
+				m_pCommon->PickerLoad_Move(1, gData.nPosX_LoadTray, 2);
 				m_dLoadTrayX[1] = m_pCommon->m_dP1X[1];
 				//m_pAJinAXL->Move_Absolute(AX_LOAD_TRAY_X2, m_dLoadTrayX);
 				m_pAJinAXL->Move_Abs_Accel(AX_LOAD_TRAY_X2, m_dLoadTrayX[1], m_pMoveData->dDLoadTrayX2[2]);
@@ -1324,7 +1324,7 @@ BOOL CSequenceMain::Load2_Run()
 		break;
 	case 360:
 		if (m_pCommon->Check_Position(AX_LOAD_TRAY_X2, 3)) {
-			gData.nTrayPos[0] = 0;
+			gData.nPosX_LoadTray = 0;
 
 			m_pDY1->oLS_Z2AlignS12In = FALSE;
 			m_pDY1->oLS_Z2AlignS12Out = TRUE;
@@ -3326,7 +3326,8 @@ BOOL CSequenceMain::NGPicker_Run()
 		}
 		break;
 	case 140:
-		if (m_pCommon->Check_Position(AX_NG_PICKER_X, 0) ) {
+		if (m_pCommon->Check_Position(AX_NG_PICKER_X, 0) ) 
+		{
 			if (gData.IndexInfo[2][0]>=2) { m_pDY3->oNGPicker1Up = FALSE; m_pDY3->oNGPicker1Down = TRUE; gData.NGJobPic[0]=1; }
 			if (gData.IndexInfo[2][1]>=2) { m_pDY3->oNGPicker2Up = FALSE; m_pDY3->oNGPicker2Down = TRUE; gData.NGJobPic[1]=1; }
 			if (gData.IndexInfo[2][2]>=2) { m_pDY3->oNGPicker3Up = FALSE; m_pDY3->oNGPicker3Down = TRUE; gData.NGJobPic[2]=1; }
@@ -3341,7 +3342,8 @@ BOOL CSequenceMain::NGPicker_Run()
 		}
 		break;
 	case 141:	// NG Picker Down
-		if (m_pCommon->Check_Position(AX_NG_PICKER_X, 0) ) {
+		if (m_pCommon->Check_Position(AX_NG_PICKER_X, 0) ) 
+		{
 			if (gData.IndexInfo[2][0]>=2) { m_pDY3->oNGPicker1Up = FALSE; m_pDY3->oNGPicker1Down = TRUE; gData.NGJobPic[0]=1; }
 			if (gData.IndexInfo[2][1]>=2) { m_pDY3->oNGPicker2Up = FALSE; m_pDY3->oNGPicker2Down = TRUE; gData.NGJobPic[1]=1; }
 			if (gData.IndexInfo[2][2]>=2) { m_pDY3->oNGPicker3Up = FALSE; m_pDY3->oNGPicker3Down = TRUE; gData.NGJobPic[2]=1; }
@@ -3489,9 +3491,9 @@ BOOL CSequenceMain::NGPicker_Run()
 
 	case 170:
 		if((gData.NGJobPic[0]==0 || (gData.NGJobPic[0]==1 && m_pDX3->iNGPicker1Up && !m_pDX3->iNGPicker1Down)) &&
-		   (gData.NGJobPic[1]==0 || (gData.NGJobPic[1]==1 && m_pDX3->iNGPicker2Up && !m_pDX3->iNGPicker2Down)) &&
-		   (gData.NGJobPic[2]==0 || (gData.NGJobPic[2]==1 && m_pDX3->iNGPicker3Up && !m_pDX3->iNGPicker3Down)) &&
-		   (gData.NGJobPic[3]==0 || (gData.NGJobPic[3]==1 && m_pDX3->iNGPicker4Up && !m_pDX3->iNGPicker4Down)) 
+			(gData.NGJobPic[1]==0 || (gData.NGJobPic[1]==1 && m_pDX3->iNGPicker2Up && !m_pDX3->iNGPicker2Down)) &&
+			(gData.NGJobPic[2]==0 || (gData.NGJobPic[2]==1 && m_pDX3->iNGPicker3Up && !m_pDX3->iNGPicker3Down)) &&
+			(gData.NGJobPic[3]==0 || (gData.NGJobPic[3]==1 && m_pDX3->iNGPicker4Up && !m_pDX3->iNGPicker4Down)) 
 #ifdef NG_PICKER_5
 		   && (gData.NGJobPic[4]==0 || (gData.NGJobPic[4]==1 && m_pDX3->iNGPicker5Up && !m_pDX3->iNGPicker5Down)) 
 #endif		   
@@ -4684,7 +4686,7 @@ BOOL CSequenceMain::GDPicker_Run()
 // 8.  (Error : 7100)
 BOOL CSequenceMain::LDPicker_Run()
 {
-	int		x;
+	int		nPosX;
 	static int nLDPSNo = 0;
 
 	switch (m_nLDPickerCase) {
@@ -4702,7 +4704,7 @@ BOOL CSequenceMain::LDPicker_Run()
 			m_nLDPickerCase = 102;
 			m_pCommon->Set_LoopTime(AUTO_LDPICKER, 30000);
 		} else 
-		if (gData.nTrayPos[0] > 0 && (gData.bCleanOutMode == FALSE) &&
+		if (gData.nPosX_LoadTray > 0 && (gData.bCleanOutMode == FALSE) &&
 		   (m_nLoad1Case == 300 || m_nLoad2Case == 300)) {
 			m_sLog.Format("m_nLDPickerCase,%d",m_nLDPickerCase); pLogFile->Save_MCCLog(m_sLog);
 			m_nLDPickerCase = 110;
@@ -4730,7 +4732,7 @@ BOOL CSequenceMain::LDPicker_Run()
 
 	case 110:
 		if (m_pCommon->Check_Position(AX_LOAD_PICKER_Z, 0) ) {
-			if (gData.nTrayPos[0] > 0 && //gData.IndexJob[0] == 0 &&
+			if (gData.nPosX_LoadTray > 0 && //gData.IndexJob[0] == 0 &&
 			   (m_nLoad1Case == 300 || m_nLoad2Case == 300)) {
 				if (Check_LoadTrayCM() == TRUE) {
 					if (m_nLoad1Case == 300) { m_pCommon->Move_Position(AX_LOAD_PICKER_Y1, 0); nLDPSNo = 1; }
@@ -4816,32 +4818,24 @@ BOOL CSequenceMain::LDPicker_Run()
 		}
 		break;
 	case 150:
-
-		//x=gData.PickerLoadLineNo-1;
-		//x=Get_TrayLineConvert(gData.nTrayPos[0])-1;
-		x=gData.nTrayPos[0]-1;
-		if((m_pCommon->Check_Position(AX_LOAD_PICKER_Z, 0)) &&
-//		   ((!m_pEquipData->bUseCMCheck) ||
-		   ((gData.bUseDryRun) ||
-			(((gData.LoadTrayInfo[x][0]>0 && m_pDX2->iMLPicker1CMCheck) || gData.LoadTrayInfo[x][0]==0) &&
-			 ((gData.LoadTrayInfo[x][1]>0 && m_pDX2->iMLPicker2CMCheck) || gData.LoadTrayInfo[x][1]==0) &&
-			 ((gData.LoadTrayInfo[x][2]>0 && m_pDX2->iMLPicker3CMCheck) || gData.LoadTrayInfo[x][2]==0) &&
-			 ((gData.LoadTrayInfo[x][3]>0 && m_pDX2->iMLPicker4CMCheck) || gData.LoadTrayInfo[x][3]==0) &&
-			 ((gData.LoadTrayInfo[x][4]>0 && m_pDX2->iMLPicker5CMCheck) || gData.LoadTrayInfo[x][4]==0) &&
-			 ((gData.LoadTrayInfo[x][5]>0 && m_pDX2->iMLPicker6CMCheck) || gData.LoadTrayInfo[x][5]==0)) )) {
+		nPosX = gData.nPosX_LoadTray-1;		
+		if(m_pCommon->Check_Position(AX_LOAD_PICKER_Z, 0) && ( gData.bUseDryRun ||Check_LoadPickCM(nPosX))) 
+		{
 			if (!m_pCommon->Delay_LoopTime(AUTO_LDPICKER, 100)) break;
 
 			//Info Exchange
 			gData.PickerLoadTrayNo = gData.LoadTrayNo;
-			gData.PickerLoadLineNo = gData.nTrayPos[0];
+			gData.PickerLoadLineNo = gData.nPosX_LoadTray;
 			//x=Get_TrayLineConvert(gData.PickerLoadLineNo)-1;
 
-			int cm = (gData.PickerLoadLineNo - 1) * gData.nPickCnt; //각 라인의 첫번째 cm 넘버 임시 저장 
-			for(int i=0; i<gData.nPickCnt; i++) {
-				gData.PickerInfor[0][i] = gData.LoadTrayInfo[x][i]; gData.LoadTrayInfo[x][i] = 0;
-				if (gData.PickerInfor[0][i] > 0) {
-					gLot.nCmJigNo[gData.PickerLoadTrayNo-1][cm+i][0] = nLDPSNo;
-					gLot.nCmJigNo[gData.PickerLoadTrayNo-1][cm+i][1] = i+1;
+			int nCmNo = (gData.PickerLoadLineNo - 1) * gData.nPickCnt; //각 라인의 첫번째 cm 넘버 임시 저장 
+			for(int i=0; i<gData.nPickCnt; i++) 
+			{
+				gData.PickerInfor[0][i] = gData.LoadTrayInfo[nPosX][i]; gData.LoadTrayInfo[nPosX][i] = 0;
+				if (gData.PickerInfor[0][i] > 0) 
+				{
+					gLot.nCmJigNo[gData.PickerLoadTrayNo-1][nCmNo+i][0] = nLDPSNo;
+					gLot.nCmJigNo[gData.PickerLoadTrayNo-1][nCmNo+i][1] = i+1;
 				}
 			}
 
@@ -5030,14 +5024,14 @@ BOOL CSequenceMain::LDPicker_Run()
 #endif
 		}
 		if (m_nLDPickerCase == 150) {
-			//x=Get_TrayLineConvert(gData.nTrayPos[0])-1;
-			x = gData.nTrayPos[0] - 1;
-			if (gData.LoadTrayInfo[x][0]>0 && !m_pDX2->iMLPicker1CMCheck) gData.nPicNo = 1;
-			if (gData.LoadTrayInfo[x][1]>0 && !m_pDX2->iMLPicker2CMCheck) gData.nPicNo = 2;
-			if (gData.LoadTrayInfo[x][2]>0 && !m_pDX2->iMLPicker3CMCheck) gData.nPicNo = 3;
-			if (gData.LoadTrayInfo[x][3]>0 && !m_pDX2->iMLPicker4CMCheck) gData.nPicNo = 4;
-			if (gData.LoadTrayInfo[x][4]>0 && !m_pDX2->iMLPicker5CMCheck) gData.nPicNo = 5;
-			if (gData.LoadTrayInfo[x][5]>0 && !m_pDX2->iMLPicker6CMCheck) gData.nPicNo = 6;
+			//x=Get_TrayLineConvert(gData.nPosX_LoadTray)-1;
+			nPosX = gData.nPosX_LoadTray - 1;
+			if (gData.LoadTrayInfo[nPosX][0]>0 && !m_pDX2->iMLPicker1CMCheck) gData.nPicNo = 1;
+			if (gData.LoadTrayInfo[nPosX][1]>0 && !m_pDX2->iMLPicker2CMCheck) gData.nPicNo = 2;
+			if (gData.LoadTrayInfo[nPosX][2]>0 && !m_pDX2->iMLPicker3CMCheck) gData.nPicNo = 3;
+			if (gData.LoadTrayInfo[nPosX][3]>0 && !m_pDX2->iMLPicker4CMCheck) gData.nPicNo = 4;
+			if (gData.LoadTrayInfo[nPosX][4]>0 && !m_pDX2->iMLPicker5CMCheck) gData.nPicNo = 5;
+			if (gData.LoadTrayInfo[nPosX][5]>0 && !m_pDX2->iMLPicker6CMCheck) gData.nPicNo = 6;
 		}
 		if (m_nLDPickerCase == 201) {
 		    if (gData.PickerInfor[0][0]>0 && !m_pDX2->iMLPicker1CMCheck) gData.nPicNo = 1;
@@ -6821,10 +6815,10 @@ BOOL CSequenceMain::Check_LoadTrayCM()
 {
 	int w, nCMCnt = 0;
 
-	if (gData.nTrayPos[0] < 1 || gData.nTrayPos[0] > gData.nArrayW) return FALSE;
+	if (gData.nPosX_LoadTray < 1 || gData.nPosX_LoadTray > gData.nArrayW) return FALSE;
 
-	//w = Get_TrayLineConvert(gData.nTrayPos[0]) - 1;
-	w = gData.nTrayPos[0] - 1;
+	//w = Get_TrayLineConvert(gData.nPosX_LoadTray) - 1;
+	w = gData.nPosX_LoadTray - 1;
 	for(int l=0; l<gData.nArrayL; l++) {
 		if (gData.LoadTrayInfo[w][l] > 0) return TRUE;
 	}
@@ -7710,6 +7704,18 @@ BOOL CSequenceMain::Check_NGTrayJobEnd()
 	if (Check_NGPickerAllUp() == TRUE) return TRUE;
 	return FALSE;
 }
+
+BOOL CSequenceMain::Check_LoadPickCM(int nPosx)
+{
+	if(((gData.LoadTrayInfo[nPosx][0]>0 && m_pDX2->iMLPicker1CMCheck) || gData.LoadTrayInfo[nPosx][0]==0) &&
+		((gData.LoadTrayInfo[nPosx][1]>0 && m_pDX2->iMLPicker2CMCheck) || gData.LoadTrayInfo[nPosx][1]==0) &&
+		((gData.LoadTrayInfo[nPosx][2]>0 && m_pDX2->iMLPicker3CMCheck) || gData.LoadTrayInfo[nPosx][2]==0) &&
+		((gData.LoadTrayInfo[nPosx][3]>0 && m_pDX2->iMLPicker4CMCheck) || gData.LoadTrayInfo[nPosx][3]==0) &&
+		((gData.LoadTrayInfo[nPosx][4]>0 && m_pDX2->iMLPicker5CMCheck) || gData.LoadTrayInfo[nPosx][4]==0) &&
+		((gData.LoadTrayInfo[nPosx][5]>0 && m_pDX2->iMLPicker6CMCheck) || gData.LoadTrayInfo[nPosx][5]==0)) 
+		return TRUE;
+}
+
 
 BOOL CSequenceMain::Run_Simulation()
 {

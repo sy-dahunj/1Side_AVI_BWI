@@ -149,6 +149,8 @@ public:
 	int  Count_PikerNotUse(int nPicker);		//nPicker:0(NG Picker), 1(Good Picker)
 	int  Get_TrayLineConvert(int nLine);		//Line->Array no·Î º¯ÇÑ
 	BOOL Check_NGTrayJobEnd();
+
+	BOOL	Check_LoadPickCM(int nPosx);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

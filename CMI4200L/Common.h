@@ -188,6 +188,8 @@ public:
 	BOOL	Get_NGPickerDown(int nNo);
 	void	Set_NGPickerClose(int nNo);
 	BOOL	Get_NGPickerClose(int nNo);
+
+	
 };
 
 ///////////////////////////////////////////////////////////////////////////////

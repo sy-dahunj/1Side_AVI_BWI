@@ -946,7 +946,7 @@ void CWorkDlg::Display_Status()
 	strText.Format("%d", gData.LoadTrayNo);
 	m_stcWorkSlot[0].SetWindowText(strText);
 
-	strText.Format("%d", gData.nTrayPos[0]);
+	strText.Format("%d", gData.nPosX_LoadTray);
 	m_stcWorkSlot[1].SetWindowText(strText);
 
 	strText.Format("%d", gData.nIndexPos);
@@ -954,7 +954,7 @@ void CWorkDlg::Display_Status()
 
 	for (int i = 0; i < 4; i++) 
 	{ 
-		strText.Format("%d-%d", gData.LoadTrayNo, (gData.nTrayPos[0]-1)*gData.nPickCnt + i); 
+		strText.Format("%d-%d", gData.LoadTrayNo, (gData.nPosX_LoadTray-1)*gData.nPickCnt + i); 
 		m_stcLoadPickNo[i].SetWindowText(strText); 
 	}
 
@@ -1692,11 +1692,11 @@ void CWorkDlg::OnStcLoadPickInfoClick(UINT nID)
 	
 	
 	m_stcLoadPickNo[ID].Set_Color(RGB(0xFF, 0x00, 0x00), RGB(0x0F, 0x0F, 0x0F));
-	gData.LoadTrayInfo[gData.nTrayPos[0]-1][ID] = 2;
+	gData.LoadTrayInfo[gData.nPosX_LoadTray-1][ID] = 2;
 
 	CString strLog;
 	
-	strLog.Format("MES NG, Clicked, TrayNo(%d), LineNo(%d), CmIndex(%d)", gData.LoadTrayNo, gData.nTrayPos[0], ID);
+	strLog.Format("MES NG, Clicked, TrayNo(%d), LineNo(%d), CmIndex(%d)", gData.LoadTrayNo, gData.nPosX_LoadTray, ID);
 	pLogFile->Save_HandlerLog(strLog);
 
 	//CString strText;
