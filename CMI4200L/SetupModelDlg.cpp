@@ -423,7 +423,6 @@ void CSetupModelDlg::OnBnClickedBtnSave()
 	int nDataL, nDataW, nCMCount;
 	double dDataL, dDataW, dTrayFirstLData, dTrayFirstWData, dCMWSizeData;
 
-
 	m_stcPkgXCount.GetWindowText(strData); g_objMES.Save_AviRmsData("ARRAY_L_COUNT", strData);
 	nDataL = atoi(strData);
 	m_stcPkgYCount.GetWindowText(strData); g_objMES.Save_AviRmsData("ARRAY_W_COUNT", strData);

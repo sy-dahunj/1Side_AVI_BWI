@@ -1,7 +1,6 @@
 // MESInterface.h : 헤더 파일
 //
 #pragma once
-
 class CMESInterface
 {
 public:
@@ -32,8 +31,7 @@ private:
 	int		m_nNGTray[500];
 	int		m_nNGPocket[500];
 
-	void Read_Result();
-	void Clear_Result();
+	//void Clear_Result();
 	void Write_APD();
 	void Start_Send();
 	void Set_Cancel(CString sLotID, int nCount, CString sOperID);	//Lot Cancel
@@ -41,12 +39,14 @@ private:
 	void Begin_MESThread();
 	void End_MESThread();
 	BOOL Get_ThreadMES() { return m_bThreadMES; }
+	//void Read_Result();
+	//void ResultFileSearch();
+	//void RecipeDownloadFileSearch();
 
 	void Create_Folder(CString sPath);
 	void MakeFolder(CString sPath);
 	void FileAllDelete(CString sPath);
-	void ResultFileSearch();
-	void RecipeDownloadFileSearch();
+	
 	char* UTF8ToANSI(const char *pszCode);
 
 protected:
@@ -73,6 +73,10 @@ public:
 
 	void Clear_APDResult();
 	BOOL Read_APDResult();
+	void Clear_Result();
+	void Read_Result();
+	void ResultFileSearch();
+	void RecipeDownloadFileSearch();
 };
 
 extern CMESInterface g_objMES;

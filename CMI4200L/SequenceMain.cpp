@@ -5409,7 +5409,7 @@ BOOL CSequenceMain::ULPicker_Run()
 			dwEnd = GetTickCount();
 			if((dwEnd - dwStart) > 3000) 
 			{
-				m_nULPickerCase = 221;// back to step 222 for retrying
+				m_nULPickerCase = 223;// back to step 222 for retrying
 				m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
 				break;
 			}
@@ -5420,6 +5420,34 @@ BOOL CSequenceMain::ULPicker_Run()
 				if(!g_objCapAttachUDP.Get_BarcodeDone(gData.nPortNo, gData.nGoodTrayCount+1, nGdPos)) break;
 			}
 			m_nULPickerCase = 230;
+			m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
+		}
+		break;
+	case 223:
+		if (m_pCommon->Check_Position(AX_UNLOAD_PICKER_Z, 0) ) 
+		{
+			int nTNo, nPno, nGdPos;
+			int w = gData.nTrayPos[3]-1;	//Get_TrayLineConvert(gData.nTrayPos[3])-1;
+
+			for(int i=0; i<gData.nPickCnt; i++) 
+			{
+				nTNo = (gData.PickerUnTrayNo[i] > 0 ? (gData.PickerUnTrayNo[i] - 1) : 0);				
+				if (gData.GoodTrayInfo[w][i] > 0)
+				{
+					nGdPos = (gData.nPickCnt*w) + (gData.nPickCnt-i);
+					nPno = (gData.PickerUnPoNo[i] > 0 ? (gData.PickerUnPoNo[i] - 1) : -1);
+					
+					if (nPno != -1) 
+					{
+						g_objCapAttachUDP.Set_BarcodeUpdate(gData.nPortNo, gData.nGoodTrayCount+1, nGdPos, gLot.sBarLoad[nTNo][nPno]);
+					}					
+					//pLogFile->Save_CmTrackingLog("GOOD", gData.nGoodTrayCount+1, i+1, w+1, gData.PickerUnTrayNo[i], gData.PickerUnPoNo[i]);
+					m_nUnloadLotCmCnt++;
+				}
+			}
+			m_sLog.Format("m_nUnloadPickCase,%d",m_nULPickerCase); pLogFile->Save_MCCLog(m_sLog);
+			dwStart = GetTickCount();
+			m_nULPickerCase = 222;
 			m_pCommon->Set_LoopTime(AUTO_ULPICKER, 5000);
 		}
 		break;

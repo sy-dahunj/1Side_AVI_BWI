@@ -5,7 +5,7 @@
 #include "MESInterface.h"
 #include <vector>
 #include "io.h"
-
+#include "LogFile.h"
 #include "CMI4200LDlg.h"
 #include "Common.h"
 #include "WorkDlg.h"
@@ -14,7 +14,7 @@
 #define MES_FOLDER_LOG			"D:\\MES\\LOG\\"
 #define STATUS_FOLDER			"D:\\MES\\STATUS\\"
 #define APD_FOLDER				"D:\\MES\\DATA\\"
-#define MES_DOWNLOAD_FOLDER		"D:\\MES\\RECIPEDOWNLOAD"
+#define MES_DOWNLOAD_FOLDER		"D:\\MES\\RECIPEDOWNLOAD\\"
 #define MES_FOLDER_APD			"D:\\MES\\APD\\"
 #define MES_FOLDER_RMS			"D:\\MES\\Recipe\\"
 #define MES_FOLDER_APD_RESULT	"D:\\EVMS\\TP\\MES\\VALIDATION\\"
@@ -93,8 +93,9 @@ UINT CMESInterface::Thread_MES(LPVOID lpVoid)
 	if (g_objMES.m_sMESResult == "1") {				//LotÃë¼Ò
 		if(g_objMES.m_sMesValidationType =="2" ){
 			g_objMES.RecipeDownloadFileSearch();
-			CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
-			pWorkDlg->FileSend();         //Recipe Vision Send
+			g_objMES.m_nMESSequence = 0; g_objMES.m_pThreadMES = NULL;
+			pCommon->Show_Error(995);
+			return 0;
 		}
 		g_objMES.m_nMESSequence = 0; g_objMES.m_pThreadMES = NULL;
 		pCommon->Show_Error(992);
@@ -889,7 +890,7 @@ void CMESInterface::RecipeDownloadFileSearch()
 	BOOL bRes;
     CString path, file_path, file_name;
 
-	m_sResultFileName = "";
+	m_sMESDownLoadFile = "";
     path.Format("%s*.*", MES_DOWNLOAD_FOLDER);
     CFileFind finder;
     bRes = finder.FindFile(path);
@@ -900,7 +901,11 @@ void CMESInterface::RecipeDownloadFileSearch()
             file_name = finder.GetFileName();
             file_path.Format("%s%s", MES_DOWNLOAD_FOLDER, file_name);
 
+			CLogFile *pLogFile = CLogFile::Get_Instance();
+			pLogFile->Save_TestLog(file_path);
+
 			m_sMESDownLoadFile = file_path;
+			Sleep(100);
 			return;
         }
     }
