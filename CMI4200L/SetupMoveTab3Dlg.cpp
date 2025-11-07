@@ -292,8 +292,8 @@ void CSetupMoveTab3Dlg::OnBnClickedBtnSave()
 		INI.Set_Double(strSection, strKey, dData, "%0.3lf");
 
 		// RMS 亲格 历厘
-		if (i == 0) g_objMES.Save_AviRmsData("NG Picker Z Index Down Position", strData);
-		if (i == 1) g_objMES.Save_AviRmsData("NG Picker Z Tray Down Position", strData);
+		//if (i == 0) g_objMES.Save_AviRmsData("NG Picker Z Index Down Position", strData);
+		//if (i == 1) g_objMES.Save_AviRmsData("NG Picker Z Tray Down Position", strData);
 
 		if (pMoveData->dNGPickerZ[i] != dData) {
 			sData.Format("[Setup - NG/Good Picker] ==> Group[%s] : Item[%s] Value[%0.3lf=>%0.3lf]", strSection, strKey, pMoveData->dNGPickerZ[i], dData);
@@ -322,12 +322,12 @@ void CSetupMoveTab3Dlg::OnBnClickedBtnSave()
 		INI.Set_Double(strSection, strKey, dData, "%0.3lf");
 
 		// RMS 亲格 历厘
-		if (i ==  2) g_objMES.Save_AviRmsData("Good Picker Z Picker1 Down Position", strData);
-		if (i ==  4) g_objMES.Save_AviRmsData("Good Picker Z Picker2 Down Position", strData);
-		if (i ==  6) g_objMES.Save_AviRmsData("Good Picker Z Picker3 Down Position", strData);
-		if (i ==  8) g_objMES.Save_AviRmsData("Good Picker Z Picker4 Down Position", strData);
-		if (i == 10) g_objMES.Save_AviRmsData("Good Picker Z Picker5 Down Position", strData);
-		if (i == 12) g_objMES.Save_AviRmsData("Good Picker Z Picker6 Down Position", strData);
+		//if (i ==  2) g_objMES.Save_AviRmsData("Good Picker Z Picker1 Down Position", strData);
+		//if (i ==  4) g_objMES.Save_AviRmsData("Good Picker Z Picker2 Down Position", strData);
+		//if (i ==  6) g_objMES.Save_AviRmsData("Good Picker Z Picker3 Down Position", strData);
+		//if (i ==  8) g_objMES.Save_AviRmsData("Good Picker Z Picker4 Down Position", strData);
+		//if (i == 10) g_objMES.Save_AviRmsData("Good Picker Z Picker5 Down Position", strData);
+		//if (i == 12) g_objMES.Save_AviRmsData("Good Picker Z Picker6 Down Position", strData);
 
 		if (pMoveData->dGdPickerZ[i] != dData) {
 			sData.Format("[Setup - NG/Good Picker] ==> Group[%s] : Item[%s] Value[%0.3lf=>%0.3lf]", strSection, strKey, pMoveData->dGdPickerZ[i], dData);

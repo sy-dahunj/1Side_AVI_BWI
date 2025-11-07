@@ -69,7 +69,7 @@ public:
 	void Set_TackTime(double dTack, CString sLotID, int nCount, CString sStartTime, CString sEndTime);	//sStartTime="2017/12/04 14:00:10:
 	void Set_Result(CString sLotID, CString sBarID, CString sJudge, CString sNGCode, CString NGText, int nLTray, int nLPno, int nUTray, int nUPno,int nNGTray, int nNGPno);
 	void Save_AviApdData(CString sLotID, int nPortNo, CString sOperID);
-	void Save_AviRmsData(CString sKey, CString sValue);
+	//void Save_AviRmsData(CString sKey, CString sValue);
 
 	void Clear_APDResult();
 	BOOL Read_APDResult();
