@@ -423,20 +423,20 @@ void CSetupModelDlg::OnBnClickedBtnSave()
 	int nDataL, nDataW, nCMCount;
 	double dDataL, dDataW, dTrayFirstLData, dTrayFirstWData, dCMWSizeData;
 
-	m_stcPkgXCount.GetWindowText(strData); g_objMES.Save_AviRmsData("ARRAY_L_COUNT", strData);
+	m_stcPkgXCount.GetWindowText(strData); //g_objMES.Save_AviRmsData("ARRAY_L_COUNT", strData);
 	nDataL = atoi(strData);
-	m_stcPkgYCount.GetWindowText(strData); g_objMES.Save_AviRmsData("ARRAY_W_COUNT", strData);
+	m_stcPkgYCount.GetWindowText(strData); //g_objMES.Save_AviRmsData("ARRAY_W_COUNT", strData);
 	nDataW = atoi(strData);
-	m_stcPitchL.GetWindowText(strData); g_objMES.Save_AviRmsData("TRAY_L_PITCH", strData);
+	m_stcPitchL.GetWindowText(strData); //g_objMES.Save_AviRmsData("TRAY_L_PITCH", strData);
 	dDataL = atof(strData);
-	m_stcPitchW.GetWindowText(strData); g_objMES.Save_AviRmsData("TRAY_W_PITCH", strData);
+	m_stcPitchW.GetWindowText(strData); //g_objMES.Save_AviRmsData("TRAY_W_PITCH", strData);
 	dDataW = atof(strData);
 
-	m_stcTrayFirstL.GetWindowText(strData); g_objMES.Save_AviRmsData("UNLOAD_L_PITCH", strData);
+	m_stcTrayFirstL.GetWindowText(strData); //g_objMES.Save_AviRmsData("UNLOAD_L_PITCH", strData);
 	dTrayFirstLData = atof(strData);
-	m_stcTrayFirstW.GetWindowText(strData); g_objMES.Save_AviRmsData("UNLOAD_W_PITCH", strData);
+	m_stcTrayFirstW.GetWindowText(strData); //g_objMES.Save_AviRmsData("UNLOAD_W_PITCH", strData);
 	dTrayFirstWData = atof(strData);
-	m_stcCMWsize.GetWindowText(strData); g_objMES.Save_AviRmsData("CM_W_SIZE", strData);
+	m_stcCMWsize.GetWindowText(strData); //g_objMES.Save_AviRmsData("CM_W_SIZE", strData);
 	dCMWSizeData = atof(strData);
 	m_stcCMCount.GetWindowText(strData);
 	nCMCount = atoi(strData);

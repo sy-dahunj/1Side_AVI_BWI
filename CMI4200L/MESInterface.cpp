@@ -828,21 +828,21 @@ void CMESInterface::Save_AviApdData(CString sLotID, int nPortNo, CString sOperID
 	g_csMesApd.Unlock();
 }
 
-void CMESInterface::Save_AviRmsData(CString sKey, CString sValue)
-{
-	CString strFile = (CString)MES_FOLDER_RMS + "Current_Recipe.txt";
-	
-	CFileFind finder;
-	if (!finder.FindFile(strFile)) {
-		CopyFile(gsCurrentDir + "\\System\\Current_Recipe_Org.txt", strFile, FALSE);
-	}
-
-	CIniFileCS INI(strFile);
-	if (!INI.Check_File()) { AfxMessageBox("Current_Recipe.txt File Not Found!!!"); return; }
-
-	INI.Set_String("Current_Recipe", "Recipe_Name_Handler", gData.sRecipeName);	// Model
-	INI.Set_String("Current_Recipe", sKey, sValue);	// Change Data
-}
+//void CMESInterface::Save_AviRmsData(CString sKey, CString sValue)
+//{
+//	CString strFile = (CString)MES_FOLDER_RMS + "Current_Recipe.txt";
+//	
+//	CFileFind finder;
+//	if (!finder.FindFile(strFile)) {
+//		CopyFile(gsCurrentDir + "\\System\\Current_Recipe_Org.txt", strFile, FALSE);
+//	}
+//
+//	CIniFileCS INI(strFile);
+//	if (!INI.Check_File()) { AfxMessageBox("Current_Recipe.txt File Not Found!!!"); return; }
+//
+//	INI.Set_String("Current_Recipe", "Recipe_Name_Handler", gData.sRecipeName);	// Model
+//	INI.Set_String("Current_Recipe", sKey, sValue);	// Change Data
+//}
 
 void CMESInterface::FileAllDelete(CString sPath)
 {

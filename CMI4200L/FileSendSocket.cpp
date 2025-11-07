@@ -161,8 +161,11 @@ void CFileSendSocket::OnSend(int nErrorCode)
 			m_in.Close();
 			m_state = SEND_IDLE;
 			m_fileSize = 0;
-			m_hdrSent = m_nameSent = m_dataSent = 0;
-			m_hdr.fileSizeN = m_hdr.nameLenN = 0;
+			m_hdrSent = 0;
+			m_nameSent = 0;
+			m_dataSent = 0;
+			m_hdr.fileSizeN = 0;
+			m_hdr.nameLenN = 0;
 		}
 	}
 	catch (CFileException* pEx)
@@ -228,6 +231,7 @@ BOOL CFileSendSocket::SendFile(const CString& path)
 	CString ip = _T("192.168.1.12");
 	UINT port = 21000;
 #else
+	//CString ip = _T("192.168.219.73");
 	CString ip = _T("127.0.0.1");
 	UINT port = 21000;
 #endif

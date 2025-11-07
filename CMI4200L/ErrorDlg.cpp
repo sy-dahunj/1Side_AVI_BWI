@@ -403,7 +403,7 @@ void CErrorDlg::OnBnClickedBtnErrOk()
  			pSequenceMain->Set_RunCase(AUTO_NGTRAY, 100);
  		}
 	}
-	if(m_nErrNo == 995 ||m_nErrNo == 2350){ //RecipeDownloadFile Send
+	if(m_nErrNo == 995){ //RecipeDownloadFile Send  Test¿ë : ||m_nErrNo == 2350
 		CWorkDlg *pWorkDlg = CWorkDlg::Get_Instance();
 		pWorkDlg->RecipeFileSend();  
 	}

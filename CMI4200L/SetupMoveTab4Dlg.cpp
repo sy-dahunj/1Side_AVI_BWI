@@ -359,8 +359,8 @@ void CSetupMoveTab4Dlg::OnBnClickedBtnSave()
 		INI.Set_Double(strSection, strKey, dData, "%0.3lf");
 
 		// RMS 항목 저장
-		if (i == 1) g_objMES.Save_AviRmsData("Unload Picker Z Load Down Position", strData);
-		if (i == 2) g_objMES.Save_AviRmsData("Unload Picker Z Unload Down Position", strData);
+		//if (i == 1) g_objMES.Save_AviRmsData("Unload Picker Z Load Down Position", strData);
+		//if (i == 2) g_objMES.Save_AviRmsData("Unload Picker Z Unload Down Position", strData);
 
 		if (pMoveData->dUnloadPickerZ[i] != dData) {
 			sData.Format("[Setup - Unload/Tray Picker] ==> Group[%s] : Item[%s] Value[%0.3lf=>%0.3lf]", strSection, strKey, pMoveData->dUnloadPickerZ[i], dData);

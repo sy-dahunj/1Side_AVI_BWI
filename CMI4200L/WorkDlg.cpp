@@ -261,6 +261,7 @@ BOOL CWorkDlg::OnInitDialog()
 	CString ip = "192.168.1.12";
 	UINT port = 21000;
 #else
+	//CString ip = "192.168.219.73";
 	CString ip = "127.0.0.1";
 	UINT port = 21000;
 #endif
@@ -736,6 +737,11 @@ BOOL CWorkDlg::Check_Start()
 			return FALSE;
 		}
 	}
+	//if (pInspector->Read_StatusVision() == 0) {
+	//	m_rdoWorkStart.SetCheck(FALSE);
+	//	pCommon->Show_MsgBox(1, "Vision Parameter 업데이트 진행중 입니다.... Vision 파라미터 업데이트 이후 진행하세요.");
+	//	return FALSE;
+	//}
 #ifdef AJIN_BOARD_USE
 	// 비전만 사용할때 확인해주면 된다.
 	if (!gData.bUseDryRun && !gData.bCleanOutMode && pEquipData->bUseVisionInspect) {
@@ -744,6 +750,11 @@ BOOL CWorkDlg::Check_Start()
 			nTimeOut++;
 			if (nTimeOut > 50) break;	//Time Out 5초
 			pCommon->Delay_Time(100);
+		}
+		if (pInspector->Read_StatusVision() == 0) {
+			m_rdoWorkStart.SetCheck(FALSE);
+			pCommon->Show_MsgBox(1, "Vision Parameter 업데이트 진행중 입니다.... Vision 파라미터 업데이트 이후 진행하세요.");
+			return FALSE;
 		}
 		if (gData.nVisionFOBMode == 1) {
 			if (pCommon->Show_MsgBox(2,"Vision FOB Mode 상태 입니다. 진행 하시겠습니까?") != IDOK) {
@@ -1963,5 +1974,7 @@ void CWorkDlg::RecipeFileSend()
 		}
 	}
 	RecipeFileAllDelete("D:\\MES\\VALIDATION\\");
+	//CCommon *pCommon = CCommon::Get_Instance();
+	//pCommon->Show_MsgBox(1, "파일 전송, Current_Recipe.txt 갱신 및 원본 삭제 완료.");
 	AfxMessageBox(_T("파일 전송, Current_Recipe.txt 갱신 및 원본 삭제 완료."));
 }
