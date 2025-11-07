@@ -445,8 +445,8 @@ void CAJinAXL::Save_RmsMotionSpeed(int nAxis, double dSpeed)
 	strSpeed.Format("%0.3lf", dSpeed);
 	strAccel.Format("%0.3lf", 0.0);
 
-	strName.Format("%s Speed", strAxis); g_objMES.Save_AviRmsData(strName, strSpeed);
-	strName.Format("%s Accel", strAxis); g_objMES.Save_AviRmsData(strName, strAccel);
+	strName.Format("%s Speed", strAxis); //g_objMES.Save_AviRmsData(strName, strSpeed);
+	strName.Format("%s Accel", strAxis); //g_objMES.Save_AviRmsData(strName, strAccel);
 }
 
 void CAJinAXL::Status_Monitoring()
